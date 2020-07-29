@@ -6,5 +6,6 @@ console.log('ok')
 var peer = new Peer()
 
 peer.on('open', function(id) {
+  document.write('<td>')
   console.log('id: ' + id)
 });
