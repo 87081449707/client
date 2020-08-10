@@ -4,13 +4,11 @@ console.log('Hello World!');
 var peer = new Peer()
 
 peer.on('open', function(id) {
-  alert('id')
-  console.log('id: ' + id)
+  alert('peer js id: ' + id)
 })
 
 peer.on('error', function(error) {
-  alert(error)
-  console.log('error peer js: ' + error)
+  alert('peer js error: ' + error)
 })
 
 // geolocation
@@ -27,10 +25,13 @@ function geolocation_position (position) {
 }
 
 function geolocation_error (error) {
-	alert('error geolocation: ' + error.message)
+	alert('geolocation error: ' + error.message)
 }
 
 // touchpad
 document.addEventListener('touchstart', function(event) {
   alert('geolocation x: ' + geolocation['x'] + '\n' + 'geolocatoion y: ' + geolocation['y'])
 }, false)
+
+// chart
+
