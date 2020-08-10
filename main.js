@@ -14,8 +14,8 @@ peer.on('error', function(error) {
 // geolocation
 var geolocation = []
 
-geolocation['x'] = 0
-geolocation['y'] = 0
+geolocation['x'] = undefined
+geolocation['y'] = undefined
 
 navigator.geolocation.getCurrentPosition(geolocation_position, geolocation_error);
 
@@ -33,5 +33,11 @@ document.addEventListener('touchstart', function(event) {
   alert('geolocation x: ' + geolocation['x'] + '\n' + 'geolocatoion y: ' + geolocation['y'])
 }, false)
 
-// chart
+// 'party' chart
+var party = []
+
+party['i'] = []
+party['i']['geolocation'] = []
+party['i']['geolocation']['x'] = undefined
+party['i']['geolocation']['y'] = undefined
 
