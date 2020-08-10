@@ -33,11 +33,10 @@ document.addEventListener('touchstart', function(event) {
   alert('geolocation x: ' + geolocation['x'] + '\n' + 'geolocatoion y: ' + geolocation['y'])
 }, false)
 
-// 'party' chart
+// party
 var party = []
 
+party['all'] = []
+
 party['i'] = []
-party['i']['geolocation'] = []
-party['i']['geolocation']['x'] = undefined
-party['i']['geolocation']['y'] = undefined
 
