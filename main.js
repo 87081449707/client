@@ -11,6 +11,12 @@ peer.on('error', function(error) {
   alert('peer js error: ' + error)
 })
 
+var conn = peer.connect('party0000000000')
+
+conn.on('open', function() {
+  conn.send('hi!')
+})
+
 // geolocation
 var geolocation = []
 
