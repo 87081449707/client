@@ -1,4 +1,4 @@
-console.log('Hello World!');
+console.log('client');
 
 //peer js
 var peer = new Peer()
@@ -11,7 +11,7 @@ peer.on('error', function(error) {
   alert('peer js error: ' + error)
 })
 
-var conn = peer.connect('party0000000000')
+var conn = peer.connect('party')
 
 conn.on('open', function() {
   conn.send('hi!')
