@@ -17,6 +17,10 @@ conn.on('open', function() {
   conn.send('hi!')
 })
 
+conn.on('error', function(error) {
+  alert('peer js conn error: ' + error)
+})
+
 // geolocation
 var geolocation = []
 
