@@ -1,4 +1,4 @@
-console.log('client');
+console.log('Hello world');
 
 //peer js
 var peer = new Peer()
