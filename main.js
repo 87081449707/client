@@ -13,18 +13,20 @@ peer.on('error', function(error) {
 
 var conn
 
-function peerIdConnect() = {
-  conn = peer.connect(document.getEllementById('peer_id'))
+function peerIdConnect() {
+  conn = peer.connect(document.getElementById('peer_id'))
+  
+  conn.on('open', function() {
+    alert('open')
+    conn.send('hi!')
+  })
+  
+  conn.on('error', function(error) {
+    //alert('peer js conn error: ' + error)
+  })
 }
 
-conn.on('open', function() {
-  alert('open')
-  conn.send('hi!')
-})
 
-conn.on('error', function(error) {
-  //alert('peer js conn error: ' + error)
-})
 
 // geolocation
 var geolocation = []
