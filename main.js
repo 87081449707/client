@@ -14,10 +14,13 @@ peer.on('error', function(error) {
 var conn
 
 function peerIdConnect() {
-  conn = peer.connect(document.getElementById('peer_id'))
+  document.getElementById('log').innerHTML = 'connect button'
+  
+  conn = peer.connect(document.getElementById('peer_id').value)
   
   conn.on('open', function() {
-    alert('open')
+    document.getElementById('log').innerHTML = 'open'
+    //alert('open')
     conn.send('hi!')
   })
   
