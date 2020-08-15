@@ -1,24 +1,29 @@
-console.log('Hello world');
+//console.log('Hello world');
 
 //peer js
 var peer = new Peer()
 
 peer.on('open', function(id) {
-  alert('peer js id: ' + id)
+  //alert('peer js id: ' + id)
 })
 
 peer.on('error', function(error) {
-  alert('peer js error: ' + error)
+  //alert('peer js error: ' + error)
 })
 
-var conn = peer.connect('party')
+var conn
+
+function peerIdConnect() = {
+  conn = peer.connect(document.getEllementById('peer_id'))
+}
 
 conn.on('open', function() {
+  alert('open')
   conn.send('hi!')
 })
 
 conn.on('error', function(error) {
-  alert('peer js conn error: ' + error)
+  //alert('peer js conn error: ' + error)
 })
 
 // geolocation
@@ -35,18 +40,18 @@ function geolocation_position (position) {
 }
 
 function geolocation_error (error) {
-	alert('geolocation error: ' + error.message)
+	//alert('geolocation error: ' + error.message)
 }
 
 // touchpad
 document.addEventListener('touchstart', function(event) {
-  alert('geolocation x: ' + geolocation['x'] + '\n' + 'geolocatoion y: ' + geolocation['y'])
+  //alert('geolocation x: ' + geolocation['x'] + '\n' + 'geolocatoion y: ' + geolocation['y'])
 }, false)
 
 // party
 var party = []
 
-party['all'] = []
+party['other'] = []
 
-party['i'] = []
+party['my'] = []
 

@@ -1,8 +1,28 @@
-*
+html, body
 {
+  width: 100%;
+  height: 100%;
 	margin : 0;
 	padding : 0;
-	overflow : hidden;
-	position : fixed;
 	background : coral;
+}
+.block_party
+{
+  background-color: lime;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 90% 10%;
+  grid-template-areas: 
+  "party_other"
+  "party_my";
+}
+.party_other
+{
+  grid-area: party_other;
+  background-color: green;
+}
+.party_my
+{
+  grid-area: party_my;
+  background-color: aqua;
 }
