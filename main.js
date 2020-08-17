@@ -4,42 +4,44 @@
 var net = new XMLHttpRequest()
 
 net.onload = function() {
-  serverId()
+  peerServerId()
 }
 
 //peerJs
-var client = new Peer()
-var server = []
-server.id
-var connect = []
+var peer = []
+peer.client = new Peer()
+peer.server = []
+peer.server.id = []
+peer.connect = []
+peer.connectServer = []
 
-client.on('open', function(id) {
+peer.client.on('open', function(id) {
   //document.getElementById('log').innerHTML += 'client id: ' + id
 })
 
-client.on('error', function(error) {
+peer.client.on('error', function(error) {
   //document.getElementById('log').innerHTML += 'client error: ' + error
 })
 
 net.open('GET', 'https://api.telegram.org/bot1281235712:AAH8j6p2BIW2BDd3wPPZdoD3abIAyyoB4Yk/getUpdates', false)
 net.send()
 
-function serverId() {
-  server.id = JSON.parse(net.responseText).result[JSON.parse(net.responseText).result.length - 1].message.text
-  //document.getElementById('log').innerHTML += 'server id: ' + server.id
+function peerServerId() {
+  peer.server.id = JSON.parse(net.responseText).result[JSON.parse(net.responseText).result.length - 1].message.text
+  //document.getElementById('log').innerHTML += 'peer server id: ' + peer.server.id
 }
 
-var connectServer = setInterval(function() {
-  connect = client.connect(server.id)
+peer.connectServer = setInterval(function() {
+  peer.connect = peer.client.connect(peer.server.id)
 
-  connect.on('open', function() {
-    clearInterval(connectServer)
-    connect.send('hi')
+  peer.connect.on('open', function() {
+    clearInterval(peer.connectServer)
+    peer.connect.send(peer.client.id)
     //document.getElementById('log').innerHTML = 'open'
   })
 
-  connect.on('error', function(error) {
-    clearInterval(connectServer)
+  peer.connect.on('error', function(error) {
+    clearInterval(peer.connectServer)
     //document.getElementById('log').innerHTML = 'connect error: ' + error
   })
 }, 1000)
@@ -76,12 +78,14 @@ function partyMy() {
 }
 
 var party = []
+
+
 party['other'] = []
 party['other']['number'] = []
 party['other']['photo'] = []
 party['other']['distance'] = []
 
-function partyList () {
+function partyOtherList () {
   party['other']['number'][0] = document.createElement('div')
   party['other']['number'][0].className = 'number_0'
   party['other']['number'][0].style.cssText = 
@@ -112,7 +116,7 @@ function partyList () {
   document.querySelector('.number_0').append(party['other']['distance'][0])
 }
 
-partyList()
+partyOtherList()
 
 
 
