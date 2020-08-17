@@ -70,6 +70,14 @@ peer.connect.server = setInterval(function() {
 
 // party
 var party = []
+party.server = []
+party.server.connect = []
+party.server.id = function() {
+  peer.connect.send({ id: peer.client.id })
+}
+party.server.geolocation = function() {
+  peer.connect.send({ geolocation: { x: geolocation.x, y: geolocation.y } })
+}
 party.page = []
 party.page.connect = []
 party.page.intro = []
@@ -91,36 +99,36 @@ party.page.other.load = function() {
   party.page.other.block.className = 'block'
   party.page.other.block.cssText =
     ` 
-    width: 100 vw;
-    height: 100 vh;
-    background - color: lime;
+    width: 100vw;
+    height: 100vh;
+    background-color: lime;
     display: grid;
-    grid - template - columns: 100 % ;
-    grid - template - rows: 90 % 10 % ;
-    grid - template - areas:
-    "party_other"
-    "party_my";
+    grid-template-columns: 100%;
+    grid-template-rows: 90% 10% ;
+    grid-template-areas:
+    "other"
+    "my";
     `
   document.body.append(party.page.other.block)
-
+  
   party.page.other.other = document.createElement('div')
   party.page.other.other.className = 'other'
   party.page.other.other.cssText =
     `
-    grid - area: party_other;
-    background - color: green;
-    overflow - y: scroll;
+    grid-area: other;
+    background-color: green;
+    overflow-y: scroll;
     `
-  document.querySelector(party.page.other.block).append(party.page.other.other)
+  document.querySelector('.block').append(party.page.other.other)
 
   party.page.other.my = document.createElement('div')
   party.page.other.my.className = 'my'
   party.page.other.my.cssText =
     `
-    grid - area: party_my;
-    background - color: aqua;
+    grid-area: my;
+    background-color: aqua;
     `
-  document.querySelector(party.page.other.block).append(party.page.other.my)
+  document.querySelector('.block').append(party.page.other.my)
 }
 party.page.other.list = function() {
   party.page.other.number = document.createElement('div')
@@ -164,11 +172,4 @@ party.page.my = function() {
 party.page.signal = function() {
   
 }
-party.server = []
-party.server.connect = []
-party.server.id = function() {
-  peer.connect.send({ id: peer.client.id })
-}
-party.server.geolocation = function() {
-  peer.connect.send({ geolocation: { x: geolocation.x, y: geolocation.y } })
-}
+party.page.other.load()
