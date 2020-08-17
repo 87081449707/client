@@ -1,19 +1,18 @@
 //console.log('Hello world');
 
 // geolocation
-navigator.geolocation.getCurrentPosition(geolocation_position, geolocation_error)
+navigator.geolocation.getCurrentPosition(geolocation.position(position), geolocation.error(error))
 
 var geolocation = []
 
-geolocation['x'] = undefined
-geolocation['y'] = undefined
-
-function geolocation_position(position) {
-  geolocation['x'] = position.coords.latitude //.toFixed(7) * 10000000
-  geolocation['y'] = position.coords.longitude //.toFixed(7) * 10000000
+geolocation.x = []
+geolocation.y = []
+geolocation.position = function(position) {
+  geolocation.x = position.coords.latitude //.toFixed(7) * 10000000
+  geolocation.y = position.coords.longitude //.toFixed(7) * 10000000
 }
 
-function geolocation_error(error) {
+geolocation.error = function(error) {
   //alert('geolocation error: ' + error.message)
 }
 
@@ -26,34 +25,36 @@ document.addEventListener('touchstart', function(event) {
 var net = new XMLHttpRequest()
 
 net.onload = function() {
-  peerServerId()
+  peer.telegram.receive()
 }
 
 //peerJs
 var peer = []
+
 peer.client = new Peer()
 peer.client.id = []
-peer.server = []
-peer.server.id = []
-peer.connect = []
-peer.connect.server = []
-
 peer.client.on('open', function(id) {
   //document.getElementById('log').innerHTML += 'peer client id: ' + peer.client.id
 })
-
 peer.client.on('error', function(error) {
   //document.getElementById('log').innerHTML += 'peer client error: ' + error
 })
 
-net.open('GET', 'https://api.telegram.org/bot1281235712:AAH8j6p2BIW2BDd3wPPZdoD3abIAyyoB4Yk/getUpdates', false)
-net.send()
+peer.server = []
+peer.server.id = []
 
-function peerServerId() {
+peer.telegram = []
+peer.telegram.send = function () {
+   net.open('GET', 'https://api.telegram.org/bot1281235712:AAH8j6p2BIW2BDd3wPPZdoD3abIAyyoB4Yk/getUpdates', false)
+   net.send()
+}
+peer.telegram.receive = function() {
   peer.server.id = JSON.parse(net.responseText).result[JSON.parse(net.responseText).result.length - 1].message.text
   //document.getElementById('log').innerHTML += 'peer server id: ' + peer.server.id
 }
 
+peer.connect = []
+peer.connect.server = []
 peer.connect.server = setInterval(function() {
   peer.connect = peer.client.connect(peer.server.id)
 
@@ -70,16 +71,25 @@ peer.connect.server = setInterval(function() {
 
 // party
 var party = []
+
+party.load = function() {
+  peer.telegram.send()
+  party.page.load()
+}
+
 party.server = []
-party.server.connect = []
-party.server.id = function() {
+party.server.send = []
+party.server.send.id = function() {
   peer.connect.send({ id: peer.client.id })
 }
-party.server.geolocation = function() {
+party.server.send.geolocation = function() {
   peer.connect.send({ geolocation: { x: geolocation.x, y: geolocation.y } })
 }
+
 party.page = []
-party.page.connect = []
+party.page.load = function() {
+
+}
 party.page.intro = []
 party.page.intro.image = []
 party.page.intro.load = function() {
@@ -87,6 +97,7 @@ party.page.intro.load = function() {
   party.page.intro.image.src = 'intro.jpg'
   document.body.append(party.page.intro.image)
 }
+
 party.page.other = []
 party.page.other.block = []
 party.page.other.other = []
@@ -159,17 +170,19 @@ party.page.other.list = function() {
   party.page.other.distance = document.createElement('div')
   party.page.other.distance.className = 'distance_0'
   party.page.other.distance.style.cssText =
-    ` 
+    `
     grid-area: distance;
     background-color: yellow;
     `
 
   document.querySelector('.number').append(party.page.other.distance)
 }
+
 party.page.my = function() {
 
 }
+
 party.page.signal = function() {
   
 }
-party.page.other.load()
+
