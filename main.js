@@ -1,155 +1,130 @@
-//console.log('Hello world');
+console.log('Hello world')
 
 // webRTC
 
-
 // geolocation
-var geolocation = []
+var geolocation_x
+var geolocation_y
 
-geolocation.x = []
-geolocation.y = []
-geolocation.position = function(position) {
-  geolocation.x = position.coords.latitude //.toFixed(7) * 10000000
-  geolocation.y = position.coords.longitude //.toFixed(7) * 10000000
+geolocation_position = function(position) {
+  geolocation_x = position.coords.latitude //.toFixed(7) * 10000000
+  geolocation_y = position.coords.longitude //.toFixed(7) * 10000000
 }
-geolocation.error = function(error) {
+geolocation_error = function(error) {
   //alert('geolocation error: ' + error.message)
 }
 
-navigator.geolocation.getCurrentPosition(geolocation.position, geolocation.error)
+navigator.geolocation.getCurrentPosition(geolocation_position, geolocation_error)
 
 // touchpad
 document.addEventListener('touchstart', function(event) {
   //alert('geolocation x: ' + geolocation['x'] + '\n' + 'geolocatoion y: ' + geolocation['y'])
 }, false)
 
-// XMLHttpRequest
-var net = new XMLHttpRequest()
-
-net.onload = function() {
-  peer.telegram.receive()
-}
-
 //peerJs
-var peer = []
+var client
+var client_id
 
-peer.client = new Peer()
-peer.client.id = []
-peer.client.on('open', function(id) {
-  //document.getElementById('log').innerHTML += 'peer client id: ' + peer.client.id
-})
-peer.client.on('error', function(error) {
-  //document.getElementById('log').innerHTML += 'peer client error: ' + error
-})
-
-peer.server = []
-peer.server.id = []
-
-peer.telegram = []
-
-peer.telegram.send = function () {
-   net.open('GET', 'https://api.telegram.org/bot1281235712:AAH8j6p2BIW2BDd3wPPZdoD3abIAyyoB4Yk/getUpdates', false)
-   net.send()
-}
-
-peer.telegram.receive = function() {
-  peer.server.id = JSON.parse(net.responseText).result[JSON.parse(net.responseText).result.length - 1].message.text
-  //document.getElementById('log').innerHTML += 'peer server id: ' + peer.server.id
-}
-
-peer.connect = []
-peer.connect.server = []
-peer.connect.server = setInterval(function() {
-  peer.connect = peer.client.connect(peer.server.id)
-
-  peer.connect.on('open', function() {
-    clearInterval(peer.connectServer)
+client_connect = setInterval(function (){
+  client = new Peer()
+  
+  client.on('open', function(id) {
+    client_id = id
     
-    party.server.send.id()
-    party.server.send.geolocation()
+    clearInterval(client_connect)
+    
+    //document.getElementById('log').innerHTML += 'peer client id: ' + peer.client.id
+  })
+  client.on('error', function(error) {
+    //document.getElementById('log').innerHTML += 'peer client error: ' + error
+  })
+}, 1000)
+
+var server
+var server_id
+
+server_connect = setInterval(function(){
+  server = client.connect(server_id)
+
+  server.on('open', function(){
+    clearInterval(server_connect)
+    
     //document.getElementById('log').innerHTML = 'open'
   })
 
-  peer.connect.on('error', function(error) {
-    clearInterval(peer.connectServer)
+  server.on('error', function(error){
     //document.getElementById('log').innerHTML = 'connect error: ' + error
   })
 }, 1000)
 
+// xmlHTTPrequest
+var xml = new XMLHttpRequest()
+
+xml.onload = function() {
+  telegram_receive()
+}
+
+// telegram
+var telegram
+
+telegram_send = function () {
+   xml.open('GET', 'https://api.telegram.org/bot1281235712:AAH8j6p2BIW2BDd3wPPZdoD3abIAyyoB4Yk/getUpdates', false)
+   xml.send()
+}
+telegram_receive = function() {
+  server_id = JSON.parse(net.responseText).result[JSON.parse(net.responseText).result.length - 1].message.text
+  
+  //document.getElementById('log').innerHTML += 'peer server id: ' + peer.server.id
+}
+
 // party
-var party = []
-
-party.load = function() {
-  party.page.load()
-  peer.telegram.send()
-}
-
-party.server = []
-party.server.send = []
-
-party.server.send.party = setInterval(function() {
-  peer.connect.send(JSON.stringify({party: {id: peer.client.id, geolocation: {x: geolocation.x, y: geolocation.y}}}))
+party_send = setInterval(function() {
+  net_send(JSON.stringify({party: {id: peer.client.id, geolocation: {x: geolocation.x, y: geolocation.y}}}))
 }, 30000)
-
-party.server.receive.party = []
-
-party.page = []
-
-party.page.load = function() {
-  party.page.intro.load()
+party_receive = function () {
+  
 }
 
-party.page.intro = []
-party.page.intro.block = []
-party.page.intro.image = []
-
-party.page.intro.load = function() {
-  party.page.intro.data()
-}
-
-party.page.intro.data = function() {
-  party.page.intro.block = document.createElement('div')
-  party.page.intro.block.className = 'block'
-  party.page.intro.block.style.cssText =
+// page
+page_intro = function(){
+  document.body.innerHTML = ''
+  
+  var block
+  
+  block = document.createElement('div')
+  block.className = 'block'
+  block.style.cssText =
   `
   width: 100vw;
   height: 100vh;
   `
-  document.body.append(party.page.intro.block)
+  
+  document.body.append(block)
   
   document.querySelector('.block').onclick = function() {
-    party.page.other.load()
+    page_other()
   }
 
-  party.page.intro.image = document.createElement('IMG')
-  party.page.intro.image.src = 'intro.jpg'
-  party.page.intro.image.style.cssText =
+  var image
+  
+  image = document.createElement('IMG')
+  image.src = 'intro.jpg'
+  image.style.cssText =
   `
   width: 100%;
   vertical-align: middle;
   `
-  document.querySelector('.block').append(party.page.intro.image)
+  
+  document.querySelector('.block').append(image)
 }
-
-party.page.other = []
-party.page.other.block = []
-party.page.other.other = []
-party.page.other.my = []
-
-party.page.other.load = function() {
+page_other = function(){
   document.body.innerHTML = ''
   
-  party.page.other.data()
+  var block
   
-  for(var i=0; i<party.server.receive.party; i++) {
-    party.page.other.list.data(i)
-  }
-}
-
-party.page.other.data = function() {
-  party.page.other.block = document.createElement('div')
-  party.page.other.block.className = 'block'
-  party.page.other.block.style.cssText =
+  block = document.createElement('div')
+  block.className = 'block'
+  block.style.cssText =
     ` 
     width: 100vw;
     height: 100vh;
@@ -161,42 +136,44 @@ party.page.other.data = function() {
     "other"
     "my";
     `
-  document.body.append(party.page.other.block)
+    
+  document.body.append(block)
   
-  party.page.other.other = document.createElement('div')
-  party.page.other.other.className = 'other'
-  party.page.other.other.style.cssText =
+  var other
+  
+  other = document.createElement('div')
+  other.className = 'other'
+  other.style.cssText =
     `
     grid-area: other;
     background-color: green;
     overflow-y: scroll;
     `
-  document.querySelector('.block').append(party.page.other.other)
-
-  party.page.other.my = document.createElement('div')
-  party.page.other.my.className = 'my'
-  party.page.other.my.style.cssText =
+    
+  document.querySelector('.block').append(other)
+  
+  var my
+  
+  my = document.createElement('div')
+  my.className = 'my'
+  my.style.cssText =
     `
     grid-area: my;
     background-color: aqua;
     `
-  document.querySelector('.block').append(party.page.other.my)
+    
+  document.querySelector('.block').append(my)
   
   document.querySelector('.my').onclick = function() {
-    party.page.my.load()
+    page_my()
   }
 }
-
-party.page.other.list = []
-party.page.other.list.server = []
-party.page.other.list.number = []
-party.page.other.list.photo = []
-party.page.other.list.distance = []
-
-party.page.other.list.data = function(number) {
-  party.page.other.number = document.createElement('div')
-  party.page.other.number.className = 'number_' + number
-  party.page.other.number.style.cssText =
+page_other_list = function(){
+  var block
+  
+  block_list = document.createElement('div')
+  block_list.className = 'block'
+  block_list.style.cssText =
     ` 
     width: 100vw;
     height: 110vw;
@@ -205,43 +182,44 @@ party.page.other.list.data = function(number) {
     grid-template-columns: 100%;
     grid-template-rows: 90% 10%;
     grid-template-areas:
-    "photo photo"
-    "people_number distance";
+    "photo"
+    "distance";
     `
-  document.querySelector('.other').append(party.page.other.number)
+    
+  document.querySelector('.other').append(block)
 
-  party.page.other.photo = document.createElement('div')
-  party.page.other.photo.className = 'photo_' + number
-  party.page.other.photo.style.cssText =
+  var photo
+  
+  photo = document.createElement('div')
+  photo.className = 'photo'
+  photo.style.cssText =
     ` 
     grid-area: photo;
     background-color: blue;
     `
-  document.querySelector('.number' + number).append(party.page.other.photo)
+    
+  document.querySelector('.block').append(photo)
 
-  party.page.other.distance = document.createElement('div')
-  party.page.other.distance.className = 'distance_' + number
-  party.page.other.distance.style.cssText =
+  var distance
+  
+  distance = document.createElement('div')
+  distance.className = 'distance'
+  distance.style.cssText =
     `
     grid-area: distance;
     background-color: yellow;
     `
-
-  document.querySelector('.number' + number).append(party.page.other.distance)
+  
+  document.querySelector('.block').append(distance)
 }
-
-party.page.my = []
-
-party.page.my.load = function() {
+page_my = function(){
   document.body.innerHTML = ''
   
-  party.page.my.data()
-}
-
-party.page.my.data = function() {
-  party.page.other.block = document.createElement('div')
-  party.page.other.block.className = 'block'
-  party.page.other.block.style.cssText =
+  var block
+  
+  block = document.createElement('div')
+  block.className = 'block'
+  block.style.cssText =
     ` 
       width: 100vw;
       height: 100vh;
@@ -253,53 +231,51 @@ party.page.my.data = function() {
       "my"
       "other";
       `
-  document.body.append(party.page.other.block)
+      
+  document.body.append(block)
   
-  party.page.other.other = document.createElement('div')
-  party.page.other.other.className = 'my'
-  party.page.other.other.style.cssText =
+  var my
+  
+  my = document.createElement('div')
+  my.className = 'my'
+  my.style.cssText =
     `
-      grid-area: my;
-      background-color: aqua;
-      `
-  document.querySelector('.block').append(party.page.other.other)
-  
-  party.page.other.my = document.createElement('div')
-  party.page.other.my.className = 'other'
-  party.page.other.my.style.cssText =
+    grid-area: my;
+    background-color: green;
     `
-      grid-area: other;
-      background-color: green;
-      `
-  document.querySelector('.block').append(party.page.other.my)
+    
+  document.querySelector('.block').append(my)
   
-  document.querySelector('.block').onclick = function() {
-    party.page.other.load()
+  var other
+  
+  other = document.createElement('div')
+  other.className = 'other'
+  other.style.cssText =
+    `
+    grid-area: other;
+    background-color: aqua;
+    `
+    
+  document.querySelector('.block').append(other)
+  
+  document.querySelector('.other').onclick = function() {
+    page_other()
   }
 }
-
-party.page.signal = []
-party.page.signal.interval = []
-party.page.signal.color = []
-
-party.page.signal.data = function() {
+page_signal= function(){
   document.body.innerHTML = ''
   
-  if (party.page.signal.color.lenght == 0) {
-    party.page.signal.color = 'black'
-  }
+  var color = 'black'
   
-  party.page.signal.interval = setInterval(function() {
-    if (party.page.signal.color == 'white') {
+  var play = setInterval(function() {
+    if (color == 'white') {
       document.body.style.background = 'black'
       return
     }
     
-    if (party.page.signal.color == 'black') {
+    if (color == 'black') {
       document.body.style.background = 'white'
       return
     }
-  },1000/2)
+  },1000/3)
 }
-*/
-party.load()
