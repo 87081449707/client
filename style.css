@@ -4,26 +4,3 @@ body
 	padding : 0;
 	background : coral;
 }
-.block
-{
-  width: 100vw;
-  height: 100vh;
-  background-color: lime;
-  display: grid;
-  grid-template-columns: 100%;
-  grid-template-rows: 90% 10%;
-  grid-template-areas: 
-  "party_other"
-  "party_my";
-}
-.party_other
-{
-  grid-area: party_other;
-  background-color: green;
-  overflow-y: scroll;
-}
-.party_my
-{
-  grid-area: party_my;
-  background-color: aqua;
-}
