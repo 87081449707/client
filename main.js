@@ -19,6 +19,7 @@ navigator.geolocation.getCurrentPosition(geolocation_position, geolocation_error
 // touchpad
 document.addEventListener('touchstart', function(event) {
   //alert('geolocation x: ' + geolocation['x'] + '\n' + 'geolocatoion y: ' + geolocation['y'])
+  //console.log(server_id)
 }, false)
 
 //peerJs
@@ -29,7 +30,7 @@ client_connect = setInterval(function() {
   client = new Peer()
 
   client.on('open', function(id) {
-    //alert('peerJs client id: ' + client_id)
+    alert('peerJs client open')
     
     client_id = id
 
@@ -37,7 +38,16 @@ client_connect = setInterval(function() {
   })
   
   client.on('error', function(error) {
-    //alert('peerJs client error: ' + error)
+    alert('peerJs client error: ' + error)
+  })
+  
+  client.on('connection', function(connect) {
+    alert('prerJs server connect')
+  
+    connect.on('data', function(data) {
+      alert('peerJs server data')
+  
+    })
   })
 }, 1000)
 
@@ -48,13 +58,19 @@ server_connect = setInterval(function() {
   server = client.connect(server_id)
 
   server.on('open', function() {
-    //alert('peerJs server open')
+    alert('peerJs server open')
+    
+    server.send('hi')
     
     clearInterval(server_connect)
   })
+  
+  server.on('data', function(data) {
+    alert('peerJs server data2')
+  })
 
   server.on('error', function(error) {
-    //alert('peerJs server error: ' + error)
+    alert('peerJs server error: ' + error)
   })
 }, 1000)
 
@@ -78,17 +94,17 @@ telegram_send = function() {
   xml.send()
 }
 telegram_receive = function(data) {
-  //alert('peerJs server id: ' + server_id)
+  //alert('peerJs server id: ' + JSON.parse(data).result[JSON.parse(data).result.length - 1].message.text)
   
   server_id = JSON.parse(data).result[JSON.parse(data).result.length - 1].message.text
 }
 
 // party
 party_send = setInterval(function() {
-  client_send(JSON.stringify({ party: { id: peer.client.id, geolocation: { x: geolocation.x, y: geolocation.y } } }))
-}, 30000)
-party_receive = function() {
-
+  //server.send(JSON.stringify({ party: { id: peer.client.id, geolocation: { x: geolocation.x, y: geolocation.y } } }))
+}, 1000)
+party_receive = function(data) {
+  //console.log(data)
 }
 
 // page
@@ -290,3 +306,4 @@ page_signal = function() {
     }
   }, 1000 / 3)
 }
+
