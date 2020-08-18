@@ -25,103 +25,114 @@ document.addEventListener('touchstart', function(event) {
 var client
 var client_id
 
-client_connect = setInterval(function (){
+client_connect = setInterval(function() {
   client = new Peer()
-  
+
   client.on('open', function(id) {
+    //alert('peerJs client id: ' + client_id)
+    
     client_id = id
-    
+
     clearInterval(client_connect)
-    
-    //document.getElementById('log').innerHTML += 'peer client id: ' + peer.client.id
   })
+  
   client.on('error', function(error) {
-    //document.getElementById('log').innerHTML += 'peer client error: ' + error
+    //alert('peerJs client error: ' + error)
   })
 }, 1000)
 
 var server
 var server_id
 
-server_connect = setInterval(function(){
+server_connect = setInterval(function() {
   server = client.connect(server_id)
 
-  server.on('open', function(){
-    clearInterval(server_connect)
+  server.on('open', function() {
+    //alert('peerJs server open')
     
-    //document.getElementById('log').innerHTML = 'open'
+    clearInterval(server_connect)
   })
 
-  server.on('error', function(error){
-    //document.getElementById('log').innerHTML = 'connect error: ' + error
+  server.on('error', function(error) {
+    //alert('peerJs server error: ' + error)
   })
 }, 1000)
-
-// xmlHTTPrequest
-var xml = new XMLHttpRequest()
-
-xml.onload = function() {
-  telegram_receive()
-}
 
 // telegram
 var telegram
 
-telegram_send = function () {
-   xml.open('GET', 'https://api.telegram.org/bot1281235712:AAH8j6p2BIW2BDd3wPPZdoD3abIAyyoB4Yk/getUpdates', false)
-   xml.send()
+telegram_connect = setInterval(function() {
+  telegram_send()
+
+  clearInterval(telegram_connect)
+}, 1000)
+telegram_send = function() {
+  // xmlHTTPrequest
+  var xml = new XMLHttpRequest()
+
+  xml.onload = function() {
+    telegram_receive(xml.responseText)
+  }
+
+  xml.open('GET', 'https://api.telegram.org/bot1281235712:AAH8j6p2BIW2BDd3wPPZdoD3abIAyyoB4Yk/getUpdates', false)
+  xml.send()
 }
-telegram_receive = function() {
-  server_id = JSON.parse(net.responseText).result[JSON.parse(net.responseText).result.length - 1].message.text
+telegram_receive = function(data) {
+  //alert('peerJs server id: ' + server_id)
   
-  //document.getElementById('log').innerHTML += 'peer server id: ' + peer.server.id
+  server_id = JSON.parse(data).result[JSON.parse(data).result.length - 1].message.text
 }
 
 // party
 party_send = setInterval(function() {
-  net_send(JSON.stringify({party: {id: peer.client.id, geolocation: {x: geolocation.x, y: geolocation.y}}}))
+  client_send(JSON.stringify({ party: { id: peer.client.id, geolocation: { x: geolocation.x, y: geolocation.y } } }))
 }, 30000)
-party_receive = function () {
-  
+party_receive = function() {
+
 }
 
 // page
-page_intro = function(){
+page_connect = setInterval(function() {
+  page_intro()
+
+  clearInterval(page_connect)
+}, 1000)
+page_intro = function() {
   document.body.innerHTML = ''
-  
+
   var block
-  
+
   block = document.createElement('div')
   block.className = 'block'
   block.style.cssText =
-  `
+    `
   width: 100vw;
   height: 100vh;
   `
-  
+
   document.body.append(block)
-  
+
   document.querySelector('.block').onclick = function() {
     page_other()
   }
 
   var image
-  
+
   image = document.createElement('IMG')
   image.src = 'intro.jpg'
   image.style.cssText =
-  `
+    `
   width: 100%;
   vertical-align: middle;
   `
-  
+
   document.querySelector('.block').append(image)
 }
-page_other = function(){
+page_other = function() {
   document.body.innerHTML = ''
-  
+
   var block
-  
+
   block = document.createElement('div')
   block.className = 'block'
   block.style.cssText =
@@ -136,11 +147,11 @@ page_other = function(){
     "other"
     "my";
     `
-    
+
   document.body.append(block)
-  
+
   var other
-  
+
   other = document.createElement('div')
   other.className = 'other'
   other.style.cssText =
@@ -149,11 +160,11 @@ page_other = function(){
     background-color: green;
     overflow-y: scroll;
     `
-    
+
   document.querySelector('.block').append(other)
-  
+
   var my
-  
+
   my = document.createElement('div')
   my.className = 'my'
   my.style.cssText =
@@ -161,47 +172,34 @@ page_other = function(){
     grid-area: my;
     background-color: aqua;
     `
-    
+
   document.querySelector('.block').append(my)
-  
+
   document.querySelector('.my').onclick = function() {
     page_my()
   }
 }
-page_other_list = function(){
+page_other_list = function() {
   var block
-  
+
   block_list = document.createElement('div')
   block_list.className = 'block'
   block_list.style.cssText =
     ` 
     width: 100vw;
-    height: 110vw;
+    height: 50vw;
     background-color: orange;
     display: grid;
-    grid-template-columns: 100%;
-    grid-template-rows: 90% 10%;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 100%;
     grid-template-areas:
-    "photo"
-    "distance";
+    "distance people";
     `
-    
+
   document.querySelector('.other').append(block)
 
-  var photo
-  
-  photo = document.createElement('div')
-  photo.className = 'photo'
-  photo.style.cssText =
-    ` 
-    grid-area: photo;
-    background-color: blue;
-    `
-    
-  document.querySelector('.block').append(photo)
-
   var distance
-  
+
   distance = document.createElement('div')
   distance.className = 'distance'
   distance.style.cssText =
@@ -209,14 +207,27 @@ page_other_list = function(){
     grid-area: distance;
     background-color: yellow;
     `
-  
+
   document.querySelector('.block').append(distance)
+
+  var people
+
+  photo = document.createElement('div')
+  photo.className = 'people'
+  photo.style.cssText =
+    ` 
+    grid-area: people;
+    background-color: blue;
+    `
+
+  document.querySelector('.block').append(people)
+
 }
-page_my = function(){
+page_my = function() {
   document.body.innerHTML = ''
-  
+
   var block
-  
+
   block = document.createElement('div')
   block.className = 'block'
   block.style.cssText =
@@ -231,11 +242,11 @@ page_my = function(){
       "my"
       "other";
       `
-      
+
   document.body.append(block)
-  
+
   var my
-  
+
   my = document.createElement('div')
   my.className = 'my'
   my.style.cssText =
@@ -243,11 +254,11 @@ page_my = function(){
     grid-area: my;
     background-color: green;
     `
-    
+
   document.querySelector('.block').append(my)
-  
+
   var other
-  
+
   other = document.createElement('div')
   other.className = 'other'
   other.style.cssText =
@@ -255,27 +266,27 @@ page_my = function(){
     grid-area: other;
     background-color: aqua;
     `
-    
+
   document.querySelector('.block').append(other)
-  
+
   document.querySelector('.other').onclick = function() {
     page_other()
   }
 }
-page_signal= function(){
+page_signal = function() {
   document.body.innerHTML = ''
-  
+
   var color = 'black'
-  
+
   var play = setInterval(function() {
     if (color == 'white') {
       document.body.style.background = 'black'
       return
     }
-    
+
     if (color == 'black') {
       document.body.style.background = 'white'
       return
     }
-  },1000/3)
+  }, 1000 / 3)
 }
