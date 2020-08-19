@@ -49,7 +49,7 @@ client_connect = setInterval(function() {
   
     })
   })
-}, 1000)
+}, 2000)
 
 var server
 var server_id
@@ -71,8 +71,10 @@ server_connect = setInterval(function() {
 
   server.on('error', function(error) {
     alert('peerJs server error: ' + error)
+ 
+   clearInterval(server_connect)
   })
-}, 1000)
+}, 2000)
 
 // telegram
 var telegram
