@@ -95,20 +95,23 @@ telegram_send = setInterval(function() {
   xml.send()
 }, 1000)
 telegram_receive = function(data) {
-  alert('peerJs server id: ' + JSON.parse(data).result[JSON.parse(data).result.length - 1].message.text)
+  //alert('peerJs server id: ' + JSON.parse(data).result[JSON.parse(data).result.length - 1].message.text)
   
   server_id = JSON.parse(data).result[JSON.parse(data).result.length - 1].message.text
 }
 
 // party
 party_send = setInterval(function() {
-  server.send(JSON.stringify({ party: { id: peer.client.id, geolocation: { x: geolocation.x, y: geolocation.y } } }))
+  server.send(JSON.stringify({ party: '', id: peer.client.id, geolocation: { x: geolocation.x, y: geolocation.y }, number: 5}))
 }, 1000)
 party_receive = function(data) {
   alert(data)
 }
 
 // page
+page_number = function (){
+  
+}
 page_intro = setInterval(function() {
   clearInterval(page_intro)
   
