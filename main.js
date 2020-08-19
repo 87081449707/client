@@ -30,7 +30,7 @@ client_connect = setInterval(function() {
   client = new Peer()
 
   client.on('open', function(id) {
-    //alert('peerJs client open')
+    alert('peerJs client open')
     
     client_id = id
 
@@ -38,14 +38,14 @@ client_connect = setInterval(function() {
   })
   
   client.on('error', function(error) {
-    //alert('peerJs client error: ' + error)
+    alert('peerJs client error: ' + error)
   })
   
   client.on('connection', function(connect) {
-    //alert('prerJs server connect')
+    alert('prerJs server connect')
   
     connect.on('data', function(data) {
-      //alert('peerJs client data')
+      alert('peerJs client data') + data
   
     })
   })
@@ -58,7 +58,7 @@ server_connect = setInterval(function() {
   server = client.connect(server_id)
 
   server.on('open', function() {
-    //alert('peerJs server open')
+    alert('peerJs server open')
     
     clearInterval(server_connect)
     
@@ -66,13 +66,13 @@ server_connect = setInterval(function() {
   })
   
   server.on('data', function(data) {
-    //alert('peerJs server data' + data)
+    alert('peerJs server data' + data)
     
     party_receive(data)
   })
 
   server.on('error', function(error) {
-    //alert('peerJs server error: ' + error)
+    alert('peerJs server error: ' + error)
  
    clearInterval(server_connect)
   })
