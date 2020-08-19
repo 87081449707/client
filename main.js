@@ -79,12 +79,9 @@ server_connect = setInterval(function() {
 // telegram
 var telegram
 
-telegram_connect = setInterval(function() {
-  telegram_send()
-
-  clearInterval(telegram_connect)
-}, 1000)
-telegram_send = function() {
+telegram_send = setInterval(function() {
+ clearInterval(telegram_send)
+ 
   // xmlHTTPrequest
   var xml = new XMLHttpRequest()
 
@@ -94,7 +91,7 @@ telegram_send = function() {
 
   xml.open('GET', 'https://api.telegram.org/bot1281235712:AAH8j6p2BIW2BDd3wPPZdoD3abIAyyoB4Yk/getUpdates', false)
   xml.send()
-}
+}, 1000)
 telegram_receive = function(data) {
   //alert('peerJs server id: ' + JSON.parse(data).result[JSON.parse(data).result.length - 1].message.text)
   
@@ -110,12 +107,9 @@ party_receive = function(data) {
 }
 
 // page
-page_connect = setInterval(function() {
-  page_intro()
-
-  clearInterval(page_connect)
-}, 1000)
-page_intro = function() {
+page_intro = setInterval(function() {
+  clearInterval(page_intro)
+  
   document.body.innerHTML = ''
 
   var block
@@ -145,7 +139,7 @@ page_intro = function() {
   `
 
   document.querySelector('.block').append(image)
-}
+}, 1000)
 page_other = function() {
   document.body.innerHTML = ''
 
