@@ -30,7 +30,7 @@ client_connect = setInterval(function() {
   client = new Peer()
 
   client.on('open', function(id) {
-    alert('peerJs client open')
+    //alert('peerJs client open')
     
     client_id = id
 
@@ -38,14 +38,14 @@ client_connect = setInterval(function() {
   })
   
   client.on('error', function(error) {
-    alert('peerJs client error: ' + error)
+    //alert('peerJs client error: ' + error)
   })
   
   client.on('connection', function(connect) {
-    alert('prerJs server connect')
+    //alert('prerJs server connect')
   
     connect.on('data', function(data) {
-      alert('peerJs server data')
+      //alert('peerJs client data')
   
     })
   })
@@ -58,19 +58,21 @@ server_connect = setInterval(function() {
   server = client.connect(server_id)
 
   server.on('open', function() {
-    alert('peerJs server open')
-    
-    server.send('hi')
+    //alert('peerJs server open')
     
     clearInterval(server_connect)
+    
+    server.send('hi')
   })
   
   server.on('data', function(data) {
-    alert('peerJs server data2')
+    //alert('peerJs server data' + data)
+    
+    party_receive(data)
   })
 
   server.on('error', function(error) {
-    alert('peerJs server error: ' + error)
+    //alert('peerJs server error: ' + error)
  
    clearInterval(server_connect)
   })
@@ -93,17 +95,17 @@ telegram_send = setInterval(function() {
   xml.send()
 }, 1000)
 telegram_receive = function(data) {
-  //alert('peerJs server id: ' + JSON.parse(data).result[JSON.parse(data).result.length - 1].message.text)
+  alert('peerJs server id: ' + JSON.parse(data).result[JSON.parse(data).result.length - 1].message.text)
   
   server_id = JSON.parse(data).result[JSON.parse(data).result.length - 1].message.text
 }
 
 // party
 party_send = setInterval(function() {
-  //server.send(JSON.stringify({ party: { id: peer.client.id, geolocation: { x: geolocation.x, y: geolocation.y } } }))
+  server.send(JSON.stringify({ party: { id: peer.client.id, geolocation: { x: geolocation.x, y: geolocation.y } } }))
 }, 1000)
 party_receive = function(data) {
-  //console.log(data)
+  alert(data)
 }
 
 // page
