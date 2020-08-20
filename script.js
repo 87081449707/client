@@ -177,12 +177,12 @@ var page_other = function() {
   `
 
   document.querySelector('.block').append(my)
-
+  
   document.querySelector('.my').onclick = function() {
     page_my()
   }
 }
-var page_other_list = function() {
+var page_other_list = function(data) {
   //document.body.innerHTML = ''
 
   var block
