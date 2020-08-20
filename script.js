@@ -97,6 +97,28 @@ var telegram_receive = function(data) {
 
   server_id = JSON.parse(data).result[JSON.parse(data).result.length - 1].message.text
 }
+// party
+var party = []
+//
+party_data = setInterval(function() {
+  
+}, 1000)
+
+party[0] = {
+  number: 0, distance: 0, people: 0
+}
+party[1] = {
+  number:1, distance: 1, people: 1
+}
+party[2] = {
+  number:2, distance: 2, people: 2
+}
+party[3] = {
+  number:3, distance: 2, people: 2
+}
+party[4] = {
+  number:4, distance: 2, people: 2
+}
 // page
 var page_load = setInterval(function() {
     clearInterval(page_load)
@@ -191,10 +213,14 @@ var page_other_list = function(data) {
   
   console.log('list')
   
+  
   var block
 
   block = document.createElement('div')
   block.className = 'block_' + data.number
+  
+  console.log(block.className)
+  
   block.style.cssText =
   `
   width: 100vw;
@@ -208,7 +234,7 @@ var page_other_list = function(data) {
   `
 
   document.querySelector('.other').append(block)
-
+  
   var distance
 
   distance = document.createElement('div')
@@ -222,7 +248,7 @@ var page_other_list = function(data) {
   document.querySelector('.block').append(distance)
   
   document.querySelector('.distance_' + data.number).innerHTML = '<p>' + data.distance + '</p>'
-
+  
   var people
 
   photo = document.createElement('div')
@@ -234,16 +260,22 @@ var page_other_list = function(data) {
   `
 
   document.querySelector('.block').append(people)
-
   document.querySelector('.people_' + data.number).innerHTML = '<p>' + data.people + '</p>'
+  
 }
+page_other_list(party[0])
+
 var page_other_list_add = setInterval(function() {
+  
   for (var i = 0; i < party.length; i++) {
-    page_other_list(party[i])
+    //page_other_list(party[i])
     
     console.log('list add')
+    
+    clearInterval(page_other_list_add)
   }
 }, 1000)
+
 var page_my = function() {
   document.body.innerHTML = ''
 
@@ -311,20 +343,4 @@ var page_signal = function() {
     }
   },
     1000 / 3)
-}
-// party
-var party = []
-//
-party_data = setInterval(function() {
-  
-}, 1000)
-
-party[0] = {
-  number: 0, distance: 0, people: 0
-}
-party[1] = {
-  number:1, distance: 1, people: 1
-}
-party[2] = {
-  number:2, distance: 2, people: 2
 }
