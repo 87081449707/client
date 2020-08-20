@@ -98,9 +98,14 @@ var telegram_receive = function(data) {
   server_id = JSON.parse(data).result[JSON.parse(data).result.length - 1].message.text
 }
 // page
-var page_intro = setInterval(function() {
-  clearInterval(page_intro)
-
+var page_load = setInterval(function() {
+  if (!page) {
+    clearInterval(page_load)
+    
+    page_intro()
+  }
+}, 1000)
+var page_intro = function() {
   document.body.innerHTML = ''
 
   var block
@@ -130,7 +135,7 @@ var page_intro = setInterval(function() {
   `
 
   document.querySelector('.block').append(image)
-}, 1000)
+}
 var page_other = function() {
   document.body.innerHTML = ''
 
@@ -306,6 +311,11 @@ var page_signal = function() {
 }
 // party
 var party = []
+var party_data = function(data) {
+  
+  
+  page_other_list_add()
+}
 
 party[0] = {
   number: 0, distance: 0, people: 0
