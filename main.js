@@ -96,7 +96,7 @@ telegram_send = setInterval(function() {
   xml.send()
 }, 1000)
 telegram_receive = function(data) {
-  //alert('peerJs server id: ' + JSON.parse(data).result[JSON.parse(data).result.length - 1].message.text)
+  alert('peerJs server id: ' + JSON.parse(data).result[JSON.parse(data).result.length - 1].message.text)
   
   server_id = JSON.parse(data).result[JSON.parse(data).result.length - 1].message.text
 }
