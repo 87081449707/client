@@ -1,5 +1,4 @@
 console.log('Hello world')
-
 // webRTC
 
 // geolocation
@@ -14,12 +13,10 @@ var geolocation_error = function(error) {
 }
 
 navigator.geolocation.getCurrentPosition(geolocation_position, geolocation_error)
-
 // touchpad
 document.addEventListener('touchstart', function(event) {
   
 }, false)
-
 //peerJs
 var client
 var client_id
@@ -99,7 +96,6 @@ var telegram_receive = function(data) {
 
   server_id = JSON.parse(data).result[JSON.parse(data).result.length - 1].message.text
 }
-
 // page
 var page_number = function () {
   
