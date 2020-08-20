@@ -130,6 +130,7 @@ var page_intro = function() {
   `
   width: 100%;
   vertical-align: middle;
+  horisontal-align: middle;
   `
 
   document.querySelector('.block').append(image)
