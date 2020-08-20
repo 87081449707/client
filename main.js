@@ -20,7 +20,8 @@ navigator.geolocation.getCurrentPosition(geolocation_position, geolocation_error
 document.addEventListener('touchstart', function(event) {
   //alert('geolocation x: ' + geolocation['x'] + '\n' + 'geolocatoion y: ' + geolocation['y'])
   //console.log(server_id)
-  server.send('hi')
+  //server.send('hi')
+  server_send()
 }, false)
 
 //peerJs
@@ -67,9 +68,9 @@ server_connect = setInterval(function() {
   })
   
   server.on('data', function(data) {
-    alert('peerJs server data' + data)
+    alert('peerJs server data: ' + data)
     
-    party_receive(data)
+    server_receive(data)
   })
 
   server.on('error', function(error) {
@@ -100,12 +101,10 @@ telegram_receive = function(data) {
   
   server_id = JSON.parse(data).result[JSON.parse(data).result.length - 1].message.text
 }
-
-// party
-party_send = setInterval(function() {
-  //server.send(JSON.stringify({ party: '', id: peer.client.id, geolocation: { x: geolocation.x, y: geolocation.y }, number: 5}))
-}, 1000)
-party_receive = function(data) {
+server_send = setInterval(function() {
+  server.send(JSON.stringify({ party: '', id: client_id, geolocation: { x: geolocation_x, y: geolocation_y }, number: 5}))
+}, 5000)
+server_receive = function(data) {
   alert(data)
 }
 
