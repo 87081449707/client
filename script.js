@@ -57,6 +57,12 @@ var server_connect = setInterval(function() {
 
     server.send('hi')
   })
+  
+  server.on('error', function(error) {
+    console.log('peerJs server error: ' + error)
+
+    clearInterval(server_connect)
+  })
 
   server.on('data', function(data) {
     console.log('peerJs server data: ' + data)
@@ -64,11 +70,6 @@ var server_connect = setInterval(function() {
     server_receive(data)
   })
 
-  server.on('error', function(error) {
-    console.log('peerJs server error: ' + error)
-
-    clearInterval(server_connect)
-  })
 }, 2000)
 var server_send = setInterval(function() {
   //server.send(JSON.stringify({ party: '', id: client_id, geolocation: { x: geolocation_x, y: geolocation_y }, number: 5}))
