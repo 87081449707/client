@@ -35,7 +35,7 @@ var client_connect = setInterval(function() {
   client = new Peer()
 
   client.on('open', function(id) {
-    alert('peerJs client open')
+    console.log('peerJs client open')
 
     client_id = id
 
