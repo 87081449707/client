@@ -99,11 +99,9 @@ var telegram_receive = function(data) {
 }
 // page
 var page_load = setInterval(function() {
-  if (!page) {
     clearInterval(page_load)
     
     page_intro()
-  }
 }, 1000)
 var page_intro = function() {
   document.body.innerHTML = ''
