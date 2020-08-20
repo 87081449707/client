@@ -236,11 +236,11 @@ var page_other_list = function(data) {
 
   document.querySelector('.people_' + data.number).innerHTML = '<p>' + data.people + '</p>'
 }
-var page_other_list_add = function() {
+var page_other_list_add = setInterval(function() {
   for (var i = 0; i < party.length; i++) {
     page_other_list(party[i])
   }
-}
+}, 1000)
 var page_my = function() {
   document.body.innerHTML = ''
 
@@ -311,11 +311,6 @@ var page_signal = function() {
 }
 // party
 var party = []
-var party_data = function(data) {
-  
-  
-  page_other_list_add()
-}
 
 party[0] = {
   number: 0, distance: 0, people: 0
