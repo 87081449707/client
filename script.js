@@ -17,15 +17,7 @@ navigator.geolocation.getCurrentPosition(geolocation_position, geolocation_error
 
 // touchpad
 document.addEventListener('touchstart', function(event) {
-  //console.log('geolocation x: ' + geolocation['x'] + '\n' + 'geolocatoion y: ' + geolocation['y'])
-  //console.log(server_id)
-  //server.send('hi')
-  //server_send()
-  server.send(JSON.stringify({
-    party: '', id: client_id, geolocation: {
-      x: geolocation_x, y: geolocation_y
-    }, number: 5
-  }))
+  
 }, false)
 
 //peerJs
