@@ -10,14 +10,14 @@ var geolocation_position = function(position) {
   geolocation_y = position.coords.longitude //.toFixed(7) * 10000000
 }
 var geolocation_error = function(error) {
-  //alert('geolocation error: ' + error.message)
+  //console.log('geolocation error: ' + error.message)
 }
 
 navigator.geolocation.getCurrentPosition(geolocation_position, geolocation_error)
 
 // touchpad
 document.addEventListener('touchstart', function(event) {
-  //alert('geolocation x: ' + geolocation['x'] + '\n' + 'geolocatoion y: ' + geolocation['y'])
+  //console.log('geolocation x: ' + geolocation['x'] + '\n' + 'geolocatoion y: ' + geolocation['y'])
   //console.log(server_id)
   //server.send('hi')
   //server_send()
@@ -43,14 +43,14 @@ var client_connect = setInterval(function() {
   })
 
   client.on('error', function(error) {
-    alert('peerJs client error: ' + error)
+    console.log('peerJs client error: ' + error)
   })
 
   client.on('connection', function(connect) {
-    alert('prerJs server connect')
+    console.log('prerJs server connect')
 
     connect.on('data', function(data) {
-      alert('peerJs client data') + data
+      console.log('peerJs client data') + data
 
     })
   })
@@ -62,7 +62,7 @@ var server_connect = setInterval(function() {
   server = client.connect(server_id)
 
   server.on('open', function() {
-    alert('peerJs server open')
+    console.log('peerJs server open')
 
     clearInterval(server_connect)
 
@@ -70,13 +70,13 @@ var server_connect = setInterval(function() {
   })
 
   server.on('data', function(data) {
-    alert('peerJs server data: ' + data)
+    console.log('peerJs server data: ' + data)
 
     server_receive(data)
   })
 
   server.on('error', function(error) {
-    alert('peerJs server error: ' + error)
+    console.log('peerJs server error: ' + error)
 
     clearInterval(server_connect)
   })
@@ -85,7 +85,7 @@ var server_send = setInterval(function() {
   //server.send(JSON.stringify({ party: '', id: client_id, geolocation: { x: geolocation_x, y: geolocation_y }, number: 5}))
 }, 5000)
 var server_receive = function(data) {
-  alert(data)
+  console.log(data)
 }
 // telegram
 var telegram
@@ -103,7 +103,7 @@ var telegram_send = setInterval(function() {
   xml.send()
 }, 1000)
 var telegram_receive = function(data) {
-  alert('peerJs server id: ' + JSON.parse(data).result[JSON.parse(data).result.length - 1].message.text)
+  console.log('peerJs server id: ' + JSON.parse(data).result[JSON.parse(data).result.length - 1].message.text)
 
   server_id = JSON.parse(data).result[JSON.parse(data).result.length - 1].message.text
 }
