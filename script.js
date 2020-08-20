@@ -101,7 +101,7 @@ var telegram_receive = function(data) {
 var page_load = setInterval(function() {
     clearInterval(page_load)
     
-    page_intro()
+    page_other()
 }, 1000)
 var page_intro = function() {
   document.body.innerHTML = ''
@@ -187,7 +187,9 @@ var page_other = function() {
 }
 var page_other_list = function(data) {
   //document.body.innerHTML = ''
-
+  
+  console.log('list')
+  
   var block
 
   block = document.createElement('div')
@@ -237,6 +239,8 @@ var page_other_list = function(data) {
 var page_other_list_add = setInterval(function() {
   for (var i = 0; i < party.length; i++) {
     page_other_list(party[i])
+    
+    console.log('list add')
   }
 }, 1000)
 var page_my = function() {
@@ -309,6 +313,10 @@ var page_signal = function() {
 }
 // party
 var party = []
+//
+party_data = setInterval(function() {
+  
+}, 1000)
 
 party[0] = {
   number: 0, distance: 0, people: 0
