@@ -177,7 +177,7 @@ var page_other = function() {
   `
 
   document.querySelector('.block').append(my)
-  
+
   document.querySelector('.my').onclick = function() {
     page_my()
   }
@@ -188,7 +188,7 @@ var page_other_list = function(data) {
   var block
 
   block = document.createElement('div')
-  block.className = 'block'
+  block.className = 'block_' + data.number
   block.style.cssText =
   `
   width: 100vw;
@@ -206,7 +206,7 @@ var page_other_list = function(data) {
   var distance
 
   distance = document.createElement('div')
-  distance.className = 'distance'
+  distance.className = 'distance_' + data.number
   distance.style.cssText =
   `
   grid-area: distance;
@@ -214,11 +214,13 @@ var page_other_list = function(data) {
   `
 
   document.querySelector('.block').append(distance)
+  
+  document.querySelector('.distance_' + data.number).innerHTML = '<p>' + data.distance + '</p>'
 
   var people
 
   photo = document.createElement('div')
-  photo.className = 'people'
+  photo.className = 'people_' + data.number
   photo.style.cssText =
   `
   grid-area: people;
@@ -227,6 +229,7 @@ var page_other_list = function(data) {
 
   document.querySelector('.block').append(people)
 
+  document.querySelector('.people_' + data.number).innerHTML = '<p>' + data.people + '</p>'
 }
 var page_other_list_add = function() {
   for (var i = 0; i < party.length; i++) {
@@ -305,11 +308,11 @@ var page_signal = function() {
 var party = []
 
 party[0] = {
-  distance: 0, people: 0
+  number: 0, distance: 0, people: 0
 }
 party[1] = {
-  distance: 1, people: 1
+  number:1, distance: 1, people: 1
 }
 party[2] = {
-  distance: 2, people: 2
+  number:2, distance: 2, people: 2
 }
