@@ -33,6 +33,8 @@ var client_connect = setInterval(function() {
 
   client.on('error', function(error) {
     console.log('peerJs client error: ' + error)
+  
+    clearInterval(client_connect)
   })
 
   client.on('connection', function(connect) {
