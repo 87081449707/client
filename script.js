@@ -14,9 +14,7 @@ var geolocation_error = function(error) {
 
 navigator.geolocation.getCurrentPosition(geolocation_position, geolocation_error)
 // touchpad
-document.addEventListener('touchstart', function(event) {
-  
-}, false)
+document.addEventListener('touchstart', function(event) {}, false)
 //peerJs
 var client
 var client_id
@@ -33,7 +31,7 @@ var client_connect = setInterval(function() {
 
   client.on('error', function(error) {
     console.log('peerJs client error: ' + error)
-  
+
     clearInterval(client_connect)
   })
 
@@ -59,7 +57,7 @@ var server_connect = setInterval(function() {
 
     server.send('hi')
   })
-  
+
   server.on('error', function(error) {
     console.log('peerJs server error: ' + error)
 
@@ -100,9 +98,6 @@ var telegram_receive = function(data) {
   server_id = JSON.parse(data).result[JSON.parse(data).result.length - 1].message.text
 }
 // page
-var page_number = function () {
-  
-}
 var page_intro = setInterval(function() {
   clearInterval(page_intro)
 
@@ -117,7 +112,7 @@ var page_intro = setInterval(function() {
   width: 100vw;
   height: 100vh;
   `
-  
+
   document.body.append(block)
 
   document.querySelector('.block').onclick = function() {
@@ -189,7 +184,7 @@ var page_other = function() {
 }
 var page_other_list = function() {
   //document.body.innerHTML = ''
-  
+
   var block
 
   block = document.createElement('div')
@@ -232,6 +227,11 @@ var page_other_list = function() {
 
   document.querySelector('.block').append(people)
 
+}
+var page_other_list_add = function() {
+  for (var i = 0; i < party.length; i++) {
+    page_other_list(party[i])
+  }
 }
 var page_my = function() {
   document.body.innerHTML = ''
@@ -300,4 +300,16 @@ var page_signal = function() {
     }
   },
     1000 / 3)
+}
+// party
+var party = []
+
+party[0] = {
+  distance: 0, people: 0
+}
+party[1] = {
+  distance: 1, people: 1
+}
+party[2] = {
+  distance: 2, people: 2
 }
