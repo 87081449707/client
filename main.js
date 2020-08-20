@@ -21,7 +21,8 @@ document.addEventListener('touchstart', function(event) {
   //alert('geolocation x: ' + geolocation['x'] + '\n' + 'geolocatoion y: ' + geolocation['y'])
   //console.log(server_id)
   //server.send('hi')
-  server_send()
+  //server_send()
+  server.send(JSON.stringify({ party: '', id: client_id, geolocation: { x: geolocation_x, y: geolocation_y }, number: 5 }))
 }, false)
 
 //peerJs
@@ -102,7 +103,7 @@ telegram_receive = function(data) {
   server_id = JSON.parse(data).result[JSON.parse(data).result.length - 1].message.text
 }
 server_send = setInterval(function() {
-  server.send(JSON.stringify({ party: '', id: client_id, geolocation: { x: geolocation_x, y: geolocation_y }, number: 5}))
+  //server.send(JSON.stringify({ party: '', id: client_id, geolocation: { x: geolocation_x, y: geolocation_y }, number: 5}))
 }, 5000)
 server_receive = function(data) {
   alert(data)
