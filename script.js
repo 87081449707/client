@@ -105,7 +105,7 @@ var telegram_receive = function(data) {
 }
 // party
 var party = []
-/*
+
 party_data = setInterval(function() {
   for (var i = 0; i < 30; i++) {
     party[i] = {
@@ -116,7 +116,7 @@ party_data = setInterval(function() {
   }
   page_other_list_add()
 }, 5000)
-*/
+
 // page
 var page_load = setInterval(function() {
   clearInterval(page_load)
