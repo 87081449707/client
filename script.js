@@ -1,6 +1,8 @@
 console.log('Hello world')
 // webRTC
 
+// icon
+
 // geolocation
 var geolocation_x
 var geolocation_y
@@ -313,4 +315,3 @@ var page_signal = function() {
   },
     1000 / 3)
 }
-// iconApp
