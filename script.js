@@ -76,6 +76,12 @@ var server_send = setInterval(function() {
 }, 5000)
 var server_receive = function(data) {
   console.log(data)
+  
+  for (var i = 0; i < data.length; i++) {
+    party[i] = data.party
+    
+    page_other_list_add(party[i])
+  }
 }
 // telegram
 var telegram
@@ -99,31 +105,23 @@ var telegram_receive = function(data) {
 }
 // party
 var party = []
-//
+/*
 party_data = setInterval(function() {
-  
-}, 1000)
-
-party[0] = {
-  number: 0, distance: 0, people: 0
-}
-party[1] = {
-  number:1, distance: 1, people: 1
-}
-party[2] = {
-  number:2, distance: 2, people: 2
-}
-party[3] = {
-  number:3, distance: 2, people: 2
-}
-party[4] = {
-  number:4, distance: 2, people: 2
-}
+  for (var i = 0; i < 30; i++) {
+    party[i] = {
+      number: i,
+      distance: i,
+      people: i
+    }
+  }
+  page_other_list_add()
+}, 5000)
+*/
 // page
 var page_load = setInterval(function() {
-    clearInterval(page_load)
-    
-    page_other()
+  clearInterval(page_load)
+
+  page_intro()
 }, 1000)
 var page_intro = function() {
   document.body.innerHTML = ''
@@ -209,22 +207,14 @@ var page_other = function() {
   }
 }
 var page_other_list = function(data) {
-  //document.body.innerHTML = ''
-  
-  console.log('list')
-  
-  
   var block
 
   block = document.createElement('div')
   block.className = 'block_' + data.number
-  
-  console.log(block.className)
-  
   block.style.cssText =
   `
   width: 100vw;
-  height: 50vw;
+  height: 20vw;
   background-color: orange;
   display: grid;
   grid-template-columns: 50% 50%;
@@ -234,7 +224,7 @@ var page_other_list = function(data) {
   `
 
   document.querySelector('.other').append(block)
-  
+
   var distance
 
   distance = document.createElement('div')
@@ -245,37 +235,31 @@ var page_other_list = function(data) {
   background-color: yellow;
   `
 
-  document.querySelector('.block').append(distance)
-  
+  document.querySelector('.block_' + data.number).append(distance)
   document.querySelector('.distance_' + data.number).innerHTML = '<p>' + data.distance + '</p>'
-  
+
   var people
 
-  photo = document.createElement('div')
-  photo.className = 'people_' + data.number
-  photo.style.cssText =
+  people = document.createElement('div')
+  people.className = 'people_' + data.number
+  people.style.cssText =
   `
   grid-area: people;
   background-color: blue;
   `
 
-  document.querySelector('.block').append(people)
+  document.querySelector('.block_' + data.number).append(people)
   document.querySelector('.people_' + data.number).innerHTML = '<p>' + data.people + '</p>'
-  
 }
-page_other_list(party[0])
-
-var page_other_list_add = setInterval(function() {
+var page_other_list_add = function() {
+  document.querySelector('.other').innerHTML = ''
   
   for (var i = 0; i < party.length; i++) {
-    //page_other_list(party[i])
-    
-    console.log('list add')
-    
-    clearInterval(page_other_list_add)
+    page_other_list(party[i])
   }
-}, 1000)
-
+  
+  console.log('list add')
+}
 var page_my = function() {
   document.body.innerHTML = ''
 
@@ -321,7 +305,6 @@ var page_my = function() {
   `
 
   document.querySelector('.block').append(other)
-
   document.querySelector('.other').onclick = function() {
     page_other()
   }
