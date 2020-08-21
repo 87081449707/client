@@ -55,7 +55,7 @@ var server_connect = setInterval(function() {
 
     clearInterval(server_connect)
 
-    server.send('hi')
+    //server.send('hi')
   })
 
   server.on('error', function(error) {
@@ -72,7 +72,7 @@ var server_connect = setInterval(function() {
 
 }, 2000)
 var server_send = setInterval(function() {
-  //server.send(JSON.stringify({ party: '', id: client_id, geolocation: { x: geolocation_x, y: geolocation_y }, number: 5}))
+  server.send(JSON.stringify({ party: 'other', id: client_id, geolocation: { x: geolocation_x, y: geolocation_y }}))
 }, 5000)
 var server_receive = function(data) {
   console.log(data)
@@ -108,13 +108,10 @@ var party = []
 
 party_data = setInterval(function() {
   for (var i = 0; i < 30; i++) {
-    party[i] = {
-      number: i,
-      distance: i,
-      people: i
-    }
+    party[i] = {number: i, distance: i, people: i}
   }
-  page_other_list_add()
+  
+  //page_other_list_add()
 }, 5000)
 
 // page
