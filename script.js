@@ -74,14 +74,14 @@ var server_connect = setInterval(function() {
 
 }, 2000)
 var server_send = setInterval(function() {
-  server.send(JSON.stringify({ party: 'other', id: client_id, geolocation: { x: geolocation_x, y: geolocation_y }}))
+  server.send(JSON.stringify({party: 'other', id: client_id, geolocation: {x: geolocation_x, y: geolocation_y}}))
 }, 5000)
 var server_receive = function(data) {
   console.log(data)
   
   for (var i = 0; i < data.length; i++) {
     party[i] = data.party
-    
+    ?  :
     page_other_list_add(party[i])
   }
 }
