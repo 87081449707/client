@@ -80,9 +80,7 @@ var server_receive = function(data) {
   console.log(data)
   
   for (var i = 0; i < data.length; i++) {
-    party[i] = data.party
-    
-    page_other_list_add(party[i])
+    page_other_list_add(data[i])
   }
 }
 // telegram
@@ -105,17 +103,6 @@ var telegram_receive = function(data) {
 
   server_id = JSON.parse(data).result[JSON.parse(data).result.length - 1].message.text
 }
-// party
-var party = []
-
-party_data = setInterval(function() {
-  for (var i = 0; i < 30; i++) {
-    party[i] = {number: i, distance: i, people: i}
-  }
-  
-  //page_other_list_add()
-}, 5000)
-/*
 // page
 var page_load = setInterval(function() {
   clearInterval(page_load)
@@ -326,4 +313,4 @@ var page_signal = function() {
   },
     1000 / 3)
 }
-*/
+// iconApp
