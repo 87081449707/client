@@ -8,7 +8,7 @@ var geolocation_position = function(position) {
   geolocation_x = position.coords.latitude //.toFixed(7) * 10000000
   geolocation_y = position.coords.longitude //.toFixed(7) * 10000000
 
-  console.log('geolocation_x: ' + geolocation_x + ' ' + 'geolocation_y' + geolocation_y)
+  console.log('geolocation_x: ' + geolocation_x + ' ' + 'geolocation_y: ' + geolocation_y)
 }
 var geolocation_error = function(error) {
   console.log('geolocation error: ' + error.message)
@@ -81,7 +81,7 @@ var server_receive = function(data) {
   
   for (var i = 0; i < data.length; i++) {
     party[i] = data.party
-    ?  :
+    
     page_other_list_add(party[i])
   }
 }
@@ -115,7 +115,7 @@ party_data = setInterval(function() {
   
   //page_other_list_add()
 }, 5000)
-
+/*
 // page
 var page_load = setInterval(function() {
   clearInterval(page_load)
@@ -326,3 +326,4 @@ var page_signal = function() {
   },
     1000 / 3)
 }
+*/
