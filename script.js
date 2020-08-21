@@ -8,7 +8,7 @@ var geolocation_position = function(position) {
   geolocation_x = position.coords.latitude //.toFixed(7) * 10000000
   geolocation_y = position.coords.longitude //.toFixed(7) * 10000000
 
-  console.log('geolocation_x: ' + geolocation_x + 'geolocation_y' + geolocation_y)
+  console.log('geolocation_x: ' + geolocation_x + ' ' + 'geolocation_y' + geolocation_y)
 }
 var geolocation_error = function(error) {
   console.log('geolocation error: ' + error.message)
