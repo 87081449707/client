@@ -1,0 +1,30 @@
+{
+"short_name": "Полезный сайт",
+"name": "Полезный сайт - mindwork.su",
+"theme_color": "#4A90E2",
+"background_color": "#F7F8F9",
+"display": "standalone",
+"icons": [
+{
+"src": "/icons/icon-1x.png",
+"type": "image/png",
+"sizes": "48x48"
+},
+{
+"src": "/icons/icon-2x.png",
+"type": "image/png",
+"sizes": "96x96"
+},
+{
+"src": "/icons/icon-3x.png",
+"type": "image/png",
+"sizes": "144x144"
+},
+{
+"src": "/icons/icon-4x.png",
+"type": "image/png",
+"sizes": "192x192"
+}
+],
+"start_url": "/"
+}
