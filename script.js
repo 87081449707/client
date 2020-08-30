@@ -5,537 +5,339 @@ console.log('Hello world')
 
 // compas
 
+// googleMap
 
 // geolocation
-var geolocation_x
-var geolocation_y
-var geolocation_position = function(position) {
-	geolocation_x = position.coords.latitude //.toFixed(7) * 10000000
-	geolocation_y = position.coords.longitude //.toFixed(7) * 10000000
-}
-var geolocation_error = function(error) {
-	//console.log('geolocation error: ' + error.message)
-}
+let geolocation = setInterval(function() {
+  let geolocation_position = function(position) {
+    clearInterval(geolocation)
 
-navigator.geolocation.getCurrentPosition(geolocation_position, geolocation_error)
-// touchpad
-document.addEventListener('touchstart', function(event) {}, false)
-//peerJs
-var client
-var client_id
-var client_connect = setInterval(function() {
-	client = new Peer()
+    geolocation_x = position.coords.latitude
+    geolocation_y = position.coords.longitude
 
-	client.on('open', function(id) {
-		console.log('peerJs client open')
+    console.log('geolocation x: ' + geolocation_x)
+    console.log('geolocation y: ' + geolocation_y)
+  }
+  let geolocation_error = function(error) {
+    clearInterval(geolocation)
 
-		client_id = id
-
-		clearInterval(client_connect)
-	})
-	client.on('error', function(error) {
-		console.log('peerJs client error: ' + error)
-
-		clearInterval(client_connect)
-	})
-	client.on('connection', function(connect) {
-		console.log('prerJs server connect')
-
-		connect.on('data', function(data) {
-			console.log('peerJs client data') + data
-
-		})
-	})
-}, 5000)
-
-var server
-var server_id
-var server_connect = setInterval(function() {
-	server = client.connect(server_id)
-
-	server.on('open', function() {
-		console.log('peerJs server open')
-
-		clearInterval(server_connect)
-
-		server.send('hi')
-	})
-	server.on('error', function(error) {
-		console.log('peerJs server error: ' + error)
-
-		clearInterval(server_connect)
-	})
-	server.on('data', function(data) {
-		console.log('peerJs server data: ' + data)
-
-		server_receive(data)
-	})
-}, 5000)
-var server_send = setInterval(function() {
-	if (document.querySelector('.find_block')) {
-		server.send(JSON.stringify({
-			party: 'party_find',
-			client_id: client_id,
-			geolocation_x: geolocation_x,
-			geolocation_y: geolocation_y
-		}))
-	}
-	if (document.querySelector('.create_block')) {
-		server.send(JSON.stringify({
-			party: 'party_create',
-			client_id: client_id,
-			geolocation_x: geolocation_x,
-			geolocation_y: geolocation_y
-		}))
-	}
-}, 5000)
-var server_receive = function(data) {
-	if (data.party == 'party_find') {
-		for (var i = 0; i < data.length; i++) {
-			party_find[i] = data[i]
-		}
-	}
-	if (data.party == 'party_create') {
-		for (var i = 0; i < data.length; i++) {
-			party_create[i] = data[i]
-		}
-	}
-}
+    console.log('geolocation error: ' + error)
+  }
+  navigator.geolocation.getCurrentPosition(geolocation_position, geolocation_error)
+}, 1000)
+let geolocation_x
+let geolocation_y
 // telegram
-var telegram
-var telegram_send = setInterval(function() {
-	clearInterval(telegram_send)
+let telegram = setInterval(function() {
+  let telegram_xhr = new XMLHttpRequest()
 
-	// xmlHTTPrequest
-	var xml = new XMLHttpRequest()
+  telegram_xhr.onload = function() {
+    clearInterval(telegram)
 
-	xml.open('GET', 'https://api.telegram.org/bot1281235712:AAH8j6p2BIW2BDd3wPPZdoD3abIAyyoB4Yk/getUpdates', false)
-	xml.send()
-	xml.onload = function() {
-		telegram_receive(xml.responseText)
-	}
-	xml.onerror = function() {
-		console.log('xml error')
-	}
-}, 100)
-var telegram_receive = function(data) {
-	console.log('peerJs server id: ' + JSON.parse(data).result[JSON.parse(data).result.length - 1].message.text)
+    telegram_id = JSON.parse(telegram_xhr.responseText).result[JSON.parse(telegram_xhr.responseText).result.length - 1].message.text
 
-	server_id = JSON.parse(data).result[JSON.parse(data).result.length - 1].message.text
+    console.log('telegram id: ' + telegram_id)
+  }
+  telegram_xhr.onerror = function() {
+    clearInterval(telegram)
+
+    console.log('telegram id error')
+  }
+
+  telegram_xhr.open('GET', 'https://api.telegram.org/bot1281235712:AAH8j6p2BIW2BDd3wPPZdoD3abIAyyoB4Yk/getUpdates', false)
+  telegram_xhr.send()
+}, 1000)
+let telegram_id
+//peerJs
+let peerJs_peer = setInterval(function() {
+  peerJs_peer = new Peer()
+
+  peerJs_peer.on('open', function(id) {
+    clearInterval(peerJs_peer)
+
+    peerJs_peer_id = id
+
+    console.log('peerJs peer open')
+  })
+  peerJs_peer.on('error', function(error) {
+    clearInterval(peerJs_peer)
+
+    console.log('peerJs peer error: ' + error)
+  })
+  peerJs_peer.on('connection', function(connect) {
+    console.log('prerJs peer connect')
+
+    connect.on('data', function(data) {
+      console.log('peerJs peer data: ' + data)
+    })
+  })
+}, 1000)
+let peerJs_peer_id
+let peerJs_connect = setInterval(function() {
+  peerJs_connect_id = telegram_id
+
+  peerJs_connect = peerJs_peer.connect(peerJs_connect_id)
+
+  peerJs_connect.on('open', function() {
+    clearInterval(peerJs_connect)
+
+    console.log('peerJs connect open')
+  })
+  peerJs_connect.on('error', function(error) {
+    clearInterval(peerJs_connect)
+
+    console.log('peerJs connect error: ' + error)
+  })
+  peerJs_connect.on('data', function(data) {
+    console.log('peerJs connect data: ' + data)
+  })
+
+
+}, 1000)
+let peerJs_connect_id
+let peerJs_connect_server = setInterval(function() {
+  peerJs_connect.send(JSON.stringify(party_server))
+
+  console.log()
+}, 1000)
+let peerJs_connect_client = function(data) {
+  party_client = JSON.parse(data)
+
+  console.log()
 }
 // party
-var party_find
-var party_create
-var party_connect
+let party_client
+let party_server
+let party_server_data = function(data) {
+  if (!data) {
+    party_data = {
+      name: 'list',
+      peerJs_peer_id: peerJs_peer_id,
+      geolocation_x: geolocation_x,
+      geolocation_y: geolocation_y
+    }
+  }
+  if (data == list) {
+    party_data = {
+      name: 'list',
+      peerJs_peer_id: peerJs_peer_id,
+      geolocation_x: geolocation_x,
+      geolocation_y: geolocation_y
+    }
+  }
+  if (data == 'create') {
+    party_data = {
+      name: 'create',
+      peerJs_peer_id: peerJs_peer_id,
+      geolocation_x: geolocation_x,
+      geolocation_y: geolocation_y
+    }
+  }
+  if (data == 'connect') {
+    party_data = {
+      name: 'connect',
+      party: 'id',
+      peerJs_peer_id: peerJs_peer_id,
+      geolocation_x: geolocation_x,
+      geolocation_y: geolocation_y
+    }
+  }
+}
+let party_server_data_create = setInterval(function() {
+  
+})
 // page
-var page_party = setInterval(function() {
-	clearInterval(page_party)
-
-	var party_block
-
-	party_block = document.createElement('div')
-	party_block.className = 'party_block'
-	party_block.style.cssText =
-	`
-	width: 100vw;
-	height: 100vh;
-	background-color: black;
-	display: grid;
-	grid-template-columns: 100%;
-	grid-template-rows: 1fr 20vw;
-	grid-template-areas:
-	"party_page"
-	"party_button";
-	`
-
-	document.body.append(party_block)
-
-	var party_page
-
-	party_page = document.createElement('div')
-	party_page.className = 'party_page'
-	party_page.style.cssText =
-	`
-	grid-area: party_page;
-	background-color: grey;
-	overflow-y: auto;
-	`
-
-	document.querySelector('.party_block').append(party_page)
-
-	var party_button
-
-	party_button = document.createElement('div')
-	party_button.className = 'party_button'
-	party_button.style.cssText =
-	`
-	grid-area: party_button;
-	width: 100%;
-	height: 100%;
-	background-color: green;
-	display: grid;
-	grid-template-columns: 25% 25% 25% 25%;
-	grid-template-rows: 100%;
-	grid-template-areas:
-	"party_button_find party_button_create party_button_signal party_button_help";
-	`
-
-	document.querySelector('.party_block').append(party_button)
-
-	var party_button_find
-
-	party_button_find = document.createElement('div')
-	party_button_find.className = 'party_button_find'
-	party_button_find.style.cssText =
-	`
-	grid-area: party_button_find;
-	background-color: #A6A600;
-	`
-
-	document.querySelector('.party_button').append(party_button_find)
-
-	document.querySelector('.party_button_find').onclick = function() {
-		page_find()
-	}
-
-	var party_button_create
-
-	party_button_create = document.createElement('div')
-	party_button_create.className = 'party_button_create'
-	party_button_create.style.cssText =
-	`
-	grid-area: party_button_create;
-	background-color: #006363;
-	`
-
-	document.querySelector('.party_button').append(party_button_create)
-
-	document.querySelector('.party_button_create').onclick = function() {
-		page_create()
-	}
-
-	var party_button_signal
-
-	party_button_signal = document.createElement('div')
-	party_button_signal.className = 'party_button_signal'
-	party_button_signal.style.cssText =
-	`
-	grid-area: party_button_signal;
-	background-color: #A64B00;
-	`
-
-	document.querySelector('.party_button').append(party_button_signal)
-
-	document.querySelector('.party_button_signal').onclick = function() {
-		page_signal()
-	}
-
-	var party_button_help
-
-	party_button_help = document.createElement('div')
-	party_button_help.className = 'party_button_help'
-	party_button_help.style.cssText =
-	`
-	grid-area: party_button_help;
-	background-color: #48036F;
-	`
-
-	document.querySelector('.party_button').append(party_button_help)
-
-	document.querySelector('.party_button_help').onclick = function() {
-		page_help()
-	}
+let page_party = setInterval(function() {
+  if (!document.querySelector('.page-party')) {
+    page_party_grid()
+  }
 }, 100)
-var page_party_load = setInterval(function() {
-	if (document.querySelector('.party_block')) {
-		clearInterval(page_party_load)
+let page_party_grid = function() {
+  let name
 
-		page_find()
-	}
+  name = document.createElement('div')
+  name.className = 'page-party-grid'
+  name.style.cssText =
+  `
+  width: 100vw;
+  height: 100vh;
+  background-color: grey;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 1fr 10vh;
+  grid-template-areas:
+  "page-party-grid-list-grid"
+  "page-party-grid-button-grid";
+  `
+
+  document.querySelector('body').append(name)
+}
+let page_party_grid_button = setInterval(function() {
+  if (!document.querySelector('.page-party-button-grid')) {
+    page_party_grid_button_grid()
+  }
 }, 100)
-var page_find = function() {
-	document.querySelector('.party_page').innerHTML = ''
+let page_party_grid_button_grid = function() {
+  let name
 
-	var find_block
+  name = document.createElement('div')
+  name.className = 'page-party-grid-button-grid'
+  name.style.cssText =
+  `
+  background-color: red;
+  grid-area: page-party-grid-button-grid;
 
-	find_block = document.createElement('div')
-	find_block.className = 'find_block'
-	find_block.style.cssText =
-	`
-	width: 100%;
-	height: 100%;
-	background-color: black;
-	`
+  `
 
-	document.querySelector('.party_page').append(find_block)
+  document.querySelector('.page-party-grid').append(name)
+
+  document.querySelector('.page-party-grid-button-grid').onclick = function() {
+    party_message_data('create')
+  }
 }
-var page_find_list = function(data, number) {
-	var find_list_block
+let page_party_grid_button_text = function() {
+  let name
 
-	find_list_block = document.createElement('div')
-	find_list_block.className = 'find_list_block_' + number
-	find_list_block.style.cssText =
-	`
-	width: 100%;
-	height: 20vw;
-	background-color: black;
-	display: grid;
-	grid-template-columns: 50% 50%;
-	grid-template-rows: 100%;
-	grid-template-areas:
-	"find_list_distance find_list_people";
-	`
+  name = document.createElement('div')
+  name.className = 'page-party-grid-button-text'
+  name.textContent = 'create'
+  name.style.cssText =
+  `
+  background-color: white;
+  text-align: center;
 
-	document.querySelector('.find_block').append(find_list_block)
+  `
 
-	document.querySelector('.find_list_block_' + number).onclick = function () {
-		//window.open('https://www.google.com/maps/@' + party[number].geolocation.x + ',' + party[number].geolocation.y)
-		//window.open('https://www.google.com/maps/place/@52.0464544,76.9242894,16z')
-	}
-
-	var find_list_distance
-
-	find_list_distance = document.createElement('div')
-	find_list_distance.className = 'find_list_distance_' + number
-	find_list_distance.style.cssText =
-	`
-	grid-area: find_list_distance;
-	background-color: orange;
-	`
-
-	document.querySelector('.find_list_block_' + number).append(find_list_distance)
-
-	var find_list_distance_text
-
-	find_list_distance_text = document.createElement('div')
-	find_list_distance_text.textContent = 'distance: ' + data.distance
-	find_list_distance_text.className = 'find_list_distance_text_' + number
-	find_list_distance_text.style.cssText =
-	`
-	text-align: center;
-	color: white;
-	`
-
-	document.querySelector('.find_list_distance_' + number).append(find_list_distance_text)
-
-	var find_list_people
-
-	find_list_people = document.createElement('div')
-	find_list_people.className = 'find_list_people_' + number
-	find_list_people.style.cssText =
-	`
-	grid-area: find_list_people;
-	background-color: orange;
-	`
-
-	document.querySelector('.find_list_block_' + number).append(find_list_people)
-
-	var find_list_people_text
-
-	find_list_people_text = document.createElement('div')
-	find_list_people_text.textContent = 'people: ' + data.people
-	find_list_people_text.className = 'find_list_people_text_' + number
-	find_list_people_text.style.cssText =
-	`
-	text-align: center;
-	color: white;
-	`
-
-	document.querySelector('.find_list_people_' + number).append(find_list_people_text)
+  document.querySelector('.page-party-grid-button-grid').append(name)
 }
-var page_find_list_add = setInterval(function() {
-	if (document.querySelector('.find_block')) {
-		document.querySelector('.find_block').innerHTML = ''
-
-		for (var i = 0; i < party_find.length; i++) {
-			page_find_list(party_find[i], i)
-		}
-	}
+let page_party_grid_list = setInterval(function() {
+  if (!document.querySelector('.page-party-grid-list-grid')) {
+    page_party_grid_list_grid()
+  }
 }, 100)
-var page_connect = function() {
-  document.querySelector('.party_page').innerHTML = ''
+let page_party_grid_list_grid = function() {
+  let name
 
-	var connect_block
+  name = document.createElement('div')
+  name.className = 'page-party-grid-list-grid'
+  name.style.cssText =
+  `
+  background-color: blue;
+  overflow-y: auto;
+  grid-area: page-party-grid-list-grid;
+  `
 
-	connect_block = document.createElement('div')
-	connect_block.className = 'connect_block'
-	connect_block.style.cssText =
-	`
-	width: 100%;
-	height: 100%;
-	background-color: black;
-	`
-
-	document.querySelector('.party_page').append(connect_block)
+  document.querySelector('.page-party-grid').append(name)
 }
-var page_connect_list = function() {
-  var block_find_list
+let page_party_grid_list_grid_block = setInterval(function() {
+  document.querySelector('.page-party-grid-list-grid').innerHTML = ''
 
-	block_find_list = document.createElement('div')
-	block_find_list.className = 'block_find_list_' + number
-	block_find_list.style.cssText =
-	`
-	width: 100%;
-	height: 20vw;
-	background-color: black;
-	display: grid;
-	grid-template-columns: 50% 50%;
-	grid-template-rows: 100%;
-	grid-template-areas:
-	"distance_find_list people_find_list";
-	`
-
-}
-var page_connect_add = setInterval(function() {
-	
+  for (var i = 0; i < party_client.length; i++) {
+    page_party_grid_list_grid_block_grid(i)
+    page_party_grid_list_grid_block_grid_distance(i)
+    page_party_grid_list_grid_block_grid_distance_text(i, party_client[i].distance)
+    page_party_grid_list_grid_block_grid_people(i)
+    page_party_grid_list_grid_block_grid_people_text(i, party_client[i].people)
+  }
 }, 100)
-var page_create = function() {
-	document.querySelector('.party_page').innerHTML = ''
+let page_party_grid_list_grid_block_grid = function(number) {
+  let name
 
-	var create_block
+  name = document.createElement('div')
+  name.className = 'page-party-grid-list-grid-block-grid-' + number
+  name.style.cssText =
+  `
+  width: 100%;
+  height: 10vh;
+  background-color: orange;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 100%;
+  grid-template-areas:
+  "page-party-grid-list-grid-block-grid-distance page-party-grid-list-grid-block-grid-people";
+  `
 
-	create_block = document.createElement('div')
-	create_block.className = 'create_block'
-	create_block.style.cssText =
-	`
-	width: 100vw;
-	height: 100vh;
-	background-color: black;
-	`
+  document.querySelector('.page-party-grid-list-grid').append(name)
 
-	document.querySelector('.party_page').append(create_block)
+  document.querySelector('.page-party-grid-list-grid-block-grid-' + number).onclick = function() {
+    party_message_data('connect')
+  }
 }
-var page_create_list = function (data, number) {
-	var create_list_block
+let page_party_grid_list_grid_block_grid_distance = function(number) {
+  let name
 
-	create_list_block = document.createElement('div')
-	create_list_block.className = 'create_list_block_' + number
-	create_list_block.style.cssText =
-	`
-	width: 100vw;
-	height: 20vw;
-	background-color: black;
-	display: grid;
-	grid-template-columns: 100%;
-	grid-template-rows: 100%;
-	grid-template-areas:
-	"create_list_distance";
-	`
+  name = document.createElement('div')
+  name.className = 'page-party-grid-list-grid-block-grid-distance-' + number
+  name.style.cssText =
+  `
+  background-color: red;
+  border-radius: 10px 0px 0px 10px;
+  margin-top: 10px;
+  margin-left:10px;
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+  grid-area: page-party-grid-list-grid-block-grid-distance;
+  `
 
-	document.querySelector('.create_block').append(create_list_block)
-
-	var create_list_distance
-
-	create_list_distance = document.createElement('div')
-	create_list_distance.className = 'create_list_distance_' + number
-	create_list_distance.style.cssText =
-	`
-	grid-area: create_list_distance;
-	background-color: orange;
-	`
-
-	document.querySelector('.create_list_block_' + number).append(create_list_distance)
-
-	var create_list_distance_text
-
-	create_list_distance_text = document.createElement('div')
-	create_list_distance_text.textContent = 'distance: ' + data.distance
-	create_list_distance_text.className = 'create_list_distance_text_' + number
-	create_list_distance_text.style.cssText =
-	`
-	text-align: center;
-	color: white;
-	`
-
-	document.querySelector('.create_list_distance_' + number).append(create_list_distance_text)
+  document.querySelector('.page-party-grid-list-grid-block-grid-' + number).append(name)
 }
-var page_create_list_add = setInterval(function() {
-	if (document.querySelector('.create_block')) {
-		document.querySelector('.create_block').innerHTML = ''
+let page_party_grid_list_grid_block_grid_distance_text = function(number, data) {
+  var name
 
-		for (var i = 0; i < party_create.length; i++) {
-			page_create_list(party_create[i], i)
-		}
-	}
-}, 100)
-var page_signal = function() {
-	document.querySelector('.party_page').innerHTML = ''
+  name = document.createElement('div')
+  name.textContent = 'distance: ' + data
+  name.className = 'page-party-grid-list-grid-block-grid-distance-text-' + number
+  name.style.cssText =
+  `
+  text-align: center;
+  color: white;
+  `
 
-	var color
-	var play = setInterval(function() {
-		if (!color) {
-			color = 'white'
-		}
-		if (color == 'white') {
-			document.querySelector('.party_page').style.background = 'white'
-			color = 'black'
-			return
-		}
-
-		if (color == 'black') {
-			document.querySelector('.party_page').style.background = 'black'
-			color = 'white'
-			return
-		}
-	},
-		1000 / 3)
+  document.querySelector('.page-party-grid-list-grid-block-grid-distance-' + number).append(name)
 }
-var page_help = function() {
-	document.querySelector('.party_page').innerHTML = ''
+let page_party_grid_list_grid_block_grid_people = function(number) {
+  var name
 
-	var help_block
+  name = document.createElement('div')
+  name.className = 'page-party-grid-list-grid-block-grid-people-' + number
+  name.style.cssText =
+  `
+  background-color: blue;
+  border-radius: 0px 10px 10px 0px;
+  margin-top: 10px;
+  margin-right:10px;
+  border-top: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  grid-area: page-party-grid-list-grid-block-grid-people;
+  `
 
-	help_block = document.createElement('div')
-	help_block.className = 'help_block'
-	help_block.style.cssText =
-	`
-	width: 100%;
-	height: 100%;
-	background-color: black;
-	`
-
-	document.querySelector('.party_page').append(help_block)
-
-	document.querySelector('.help_block').onclick = function() {
-		console.log(document.querySelector('.help_block').length)
-	}
+  document.querySelector('.page-party-grid-list-grid-block-grid-' + number).append(name)
 }
-var page_help_image = function(number) {
-	document.querySelector('.help_block').innerHTML = ''
+let page_party_grid_list_grid_block_grid_people_text = function(number, data) {
+  var name
 
-	var help_image
+  name = document.createElement('div')
+  name.textContent = 'people: ' + data
+  name.className = 'page-party-grid-list-grid-block-grid-people-text-' + number
+  name.style.cssText =
+  `
+  text-align: center;
+  color: white;
+  `
 
-	help_image = document.createElement('IMG')
-	help_image.src = 'help_image_' + number + '.jpg'
-	help_image.style.cssText =
-	`
-	width: 100%;
-	height: 100%
-	vertical-align: middle;
-	horisontal-align: middle;
-	`
-
-	document.querySelector('.help_block').append(help_image)
-}
-var page_help_image_load = setInterval(function() {
-	if (document.querySelector('.help_block')) {
-		if (document.querySelector('.help_block').length == undefined) {
-			page_help_image(0)
-		}
-	}
-}, 100)
-
-party_find = []
-for (var i = 0; i < 10; i++) {
-	party_find[i] = {
-		distance: 10,
-		people: 10
-	}
+  document.querySelector('.page-party-grid-list-grid-block-grid-people-' + number).append(name)
 }
 
-party_create = []
-for (var i = 0; i < 10; i++) {
-	party_create[i] = {
-		distance: 10,
-	}
+
+
+if (!party_client) {
+  party_client = []
+}
+for (var i = 0; i < 20; i++) {
+  party_client[i] = {
+    distance: i,
+    people: i
+  }
 }
