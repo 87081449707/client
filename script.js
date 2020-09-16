@@ -1,343 +1,273 @@
-console.log('Hello world')
+///////////////////////////////////////////////////////////////////
+/*
+.html.party()
+  .grid = undefined
+  .timer(data)
+    .second = .math.random(1, 4)
+    .console.log(.second × .this(.data))
+    .for(.i, 5, 199, ++)
+      .second = .second × .i
+    .name 50
+    .summa()
+      .return(.name)
+*/
+/*
+good
+*/
+/*
+game
+*/
 // webRTC
-
 // icon
-
 // compas
-
-// googleMap
-
-// geolocation
-let geolocation = setInterval(function() {
-  let geolocation_position = function(position) {
-    clearInterval(geolocation)
-
-    geolocation_x = position.coords.latitude
-    geolocation_y = position.coords.longitude
-
-    console.log('geolocation x: ' + geolocation_x)
-    console.log('geolocation y: ' + geolocation_y)
+let google = {
+  html: function(data) {
+    window.open('https://www.google.com/maps/@' + data.geolocation.x + ',' + data.geolocation.y + ',12z')
   }
-  let geolocation_error = function(error) {
-    clearInterval(geolocation)
-
-    console.log('geolocation error: ' + error)
-  }
-  navigator.geolocation.getCurrentPosition(geolocation_position, geolocation_error)
-}, 1000)
-let geolocation_x
-let geolocation_y
-// telegram
-let telegram = setInterval(function() {
-  let telegram_xhr = new XMLHttpRequest()
-
-  telegram_xhr.onload = function() {
-    clearInterval(telegram)
-
-    telegram_id = JSON.parse(telegram_xhr.responseText).result[JSON.parse(telegram_xhr.responseText).result.length - 1].message.text
-
-    console.log('telegram id: ' + telegram_id)
-  }
-  telegram_xhr.onerror = function() {
-    clearInterval(telegram)
-
-    console.log('telegram id error')
-  }
-
-  telegram_xhr.open('GET', 'https://api.telegram.org/bot1281235712:AAH8j6p2BIW2BDd3wPPZdoD3abIAyyoB4Yk/getUpdates', false)
-  telegram_xhr.send()
-}, 1000)
-let telegram_id
-//peerJs
-let peerJs_peer = setInterval(function() {
-  peerJs_peer = new Peer()
-
-  peerJs_peer.on('open', function(id) {
-    clearInterval(peerJs_peer)
-
-    peerJs_peer_id = id
-
-    console.log('peerJs peer open')
-  })
-  peerJs_peer.on('error', function(error) {
-    clearInterval(peerJs_peer)
-
-    console.log('peerJs peer error: ' + error)
-  })
-  peerJs_peer.on('connection', function(connect) {
-    console.log('prerJs peer connect')
-
-    connect.on('data', function(data) {
-      console.log('peerJs peer data: ' + data)
-    })
-  })
-}, 1000)
-let peerJs_peer_id
-let peerJs_connect = setInterval(function() {
-  peerJs_connect_id = telegram_id
-
-  peerJs_connect = peerJs_peer.connect(peerJs_connect_id)
-
-  peerJs_connect.on('open', function() {
-    clearInterval(peerJs_connect)
-
-    console.log('peerJs connect open')
-  })
-  peerJs_connect.on('error', function(error) {
-    clearInterval(peerJs_connect)
-
-    console.log('peerJs connect error: ' + error)
-  })
-  peerJs_connect.on('data', function(data) {
-    console.log('peerJs connect data: ' + data)
-  })
-
-
-}, 1000)
-let peerJs_connect_id
-let peerJs_connect_server = setInterval(function() {
-  peerJs_connect.send(JSON.stringify(party_server))
-
-  console.log()
-}, 1000)
-let peerJs_connect_client = function(data) {
-  party_client = JSON.parse(data)
-
-  console.log()
 }
-// party
-let party_client
-let party_server
-let party_server_data = function(data) {
-  if (!data) {
-    party_data = {
-      name: 'list',
-      peerJs_peer_id: peerJs_peer_id,
-      geolocation_x: geolocation_x,
-      geolocation_y: geolocation_y
+let geolocation = {
+  x: undefined,
+  y: undefined,
+  interval: setInterval(function() {
+    if (!geolocation.x && !geolocation.y) {
+      navigator.geolocation.position = function(position) {
+        navigator.geolocation.x = position.coords.latitude
+        navigator.geolocation.y = position.coords.longitude
+
+        console.log('navigator.geolocation.x: ' + navigator.geolocation.x)
+        console.log('navigator.geolocation.y: ' + navigator.geolocation.y)
+
+        clearInterval(geolocation.interval)
+      }
+      navigator.geolocation.error = function(error) {
+        console.log('navigator.geolocation error: ' + error)
+
+        clearInterval(geolocation.interval)
+      }
+
+      navigator.geolocation.getCurrentPosition(navigator.geolocation.position, navigator.geolocation.error)
     }
-  }
-  if (data == list) {
-    party_data = {
-      name: 'list',
-      peerJs_peer_id: peerJs_peer_id,
-      geolocation_x: geolocation_x,
-      geolocation_y: geolocation_y
+  },
+    1000),
+}
+let telegram = {
+  id: undefined,
+  xhr: undefined,
+  interval: setInterval(function() {
+    telegram.xhr = new XMLHttpRequest()
+
+    telegram.xhr.onload = function() {
+      clearInterval(telegram.interval)
+
+      telegram.id = JSON.parse(telegram.xhr.responseText).result[JSON.parse(telegram.xhr.responseText).result.length - 1].message.text
+
+      console.log('telegram.id: ' + telegram.id)
     }
-  }
-  if (data == 'create') {
-    party_data = {
-      name: 'create',
-      peerJs_peer_id: peerJs_peer_id,
-      geolocation_x: geolocation_x,
-      geolocation_y: geolocation_y
+    telegram.xhr.onerror = function() {
+      clearInterval(telegram.interval)
+
+      console.log('telegram.id error')
     }
-  }
-  if (data == 'connect') {
-    party_data = {
-      name: 'connect',
-      party: 'id',
-      peerJs_peer_id: peerJs_peer_id,
-      geolocation_x: geolocation_x,
-      geolocation_y: geolocation_y
+
+    telegram.xhr.open('GET', 'https://api.telegram.org/bot1281235712:AAH8j6p2BIW2BDd3wPPZdoD3abIAyyoB4Yk/getUpdates', false)
+    telegram.xhr.send()
+  },
+    1000)
+}
+let peerJs = {
+  peer: undefined,
+  connect: undefined,
+  interval: setInterval(function() {
+    if (!peerJs.peer) {
+      peerJs.peer = new Peer()
+
+      peerJs.peer.on('open', function(id) {
+        console.log('peerJs.peer open')
+      })
+      peerJs.peer.on('error', function(error) {
+        console.log('peerJs.peer error: ' + error)
+      })
+      peerJs.peer.on('connection', function(connect) {
+        console.log('prerJs.peer connect')
+
+        connect.on('data', function(data) {
+          console.log('peerJs.peer data: ' + data)
+        })
+      })
     }
+    if (peerJs.peer && !peerJs.connect) {
+      peerJs.connect = peerJs.peer.connect(telegram.id)
+
+      peerJs.connect.on('open', function() {
+        console.log('peerJs.connect open')
+      })
+      peerJs.connect.on('error', function(error) {
+        console.log('peerJs.connect error: ' + error)
+      })
+      peerJs.connect.on('data', function(data) {
+        console.log('peerJs.connect data: ' + data)
+      })
+    }
+    if (peerJs.peer && peerJs.connect) {
+      clearInterval(peerJs.interval)
+    }
+    //peerJs.connect.send(JSON.stringify(party.server))
+  },
+    1000)
+}
+let html = {
+  party: {
+    interval: setInterval(function() {
+      if (!document.querySelector('.html-party-grid')) {
+        html.party.grid()
+      }
+      if (!document.querySelector('.html-party-button-grid')) {
+        html.party.button.grid()
+      }
+      if (!document.querySelector('.html-party-list-grid')) {
+        html.party.list.grid()
+      }
+
+      document.querySelector('.html-party-list-grid').innerHTML = ""
+
+      for (var i = 0; i < 3; i++) {
+        html.party.list.block.grid(i)
+        html.party.list.block.distance.grid(i)
+        html.party.list.block.people.grid(i)
+      }
+    },
+      1000),
+    grid: function() {
+      let div
+
+      div = document.createElement('div')
+      div.className = 'html-party-grid'
+      div.style.cssText =
+      `
+      width: 100vw;
+      height: 100vh;
+      background-color: grey;
+      display: grid;
+      grid-template-columns: 100%;
+      grid-template-rows: 1fr 10vh;
+      grid-template-areas:
+      "html-party-list-grid"
+      "html-party-button-grid";
+      `
+
+      document.querySelector('body').append(div)
+    },
+    button: {
+      grid: function() {
+        let div
+
+        div = document.createElement('div')
+        div.className = 'html-party-button-grid'
+        div.style.cssText =
+        `
+        background-color: black;
+        grid-area: html-party-button-grid;
+
+        `
+
+        document.querySelector('.html-party-grid').append(div)
+      },
+    },
+    list: {
+      grid: function() {
+        let div
+
+        div = document.createElement('div')
+        div.className = 'html-party-list-grid'
+        div.style.cssText =
+        `
+        width: 100%;
+        height: 100%;
+        background-color: blue;
+        grid-area: html-party-list-grid;
+        `
+
+        document.querySelector('.html-party-grid').append(div)
+      },
+      block: {
+        grid: function(data) {
+          let div
+
+          div = document.createElement('div')
+          div.className = 'html-party-list-block-grid-' + data
+          div.style.cssText =
+          `
+          width: 100%;
+          height: 10vh;
+          background-color: orange;
+          display: grid;
+          grid-template-columns: 50% 50%;
+          grid-template-rows: 100%;
+          grid-template-areas:
+          "html-party-list-block-distance-grid html-party-list-block-people-grid";
+          `
+
+          document.querySelector('.html-party-list-grid').append(div)
+        },
+        distance: {
+          grid: function(data) {
+            let div
+
+            div = document.createElement('div')
+            div.className = 'html-party-list-block-distance-grid-' + data
+            div.style.cssText =
+            `
+            background-color: green;
+            grid-area: html-party-list-block-distance-grid;
+            `
+
+            document.querySelector('.html-party-list-block-grid-' + data).append(div)
+          },
+        },
+        people: {
+          grid: function(data) {
+            let div
+
+            div = document.createElement('div')
+            div.className = 'html-party-list-block-people-grid-' + data
+            div.style.cssText =
+            `
+            background-color: yellow;
+            grid-area: html-party-list-block-people-grid;
+            `
+
+            document.querySelector('.html-party-list-block-grid-' + data).append(div)
+          },
+        },
+      },
+    },
   }
 }
-let party_server_data_create = setInterval(function() {
-  
-})
-// page
-let page_party = setInterval(function() {
-  if (!document.querySelector('.page-party')) {
-    page_party_grid()
-  }
-}, 100)
-let page_party_grid = function() {
-  let name
-
-  name = document.createElement('div')
-  name.className = 'page-party-grid'
-  name.style.cssText =
-  `
-  width: 100vw;
-  height: 100vh;
-  background-color: grey;
-  display: grid;
-  grid-template-columns: 100%;
-  grid-template-rows: 1fr 10vh;
-  grid-template-areas:
-  "page-party-grid-list-grid"
-  "page-party-grid-button-grid";
-  `
-
-  document.querySelector('body').append(name)
-}
-let page_party_grid_button = setInterval(function() {
-  if (!document.querySelector('.page-party-button-grid')) {
-    page_party_grid_button_grid()
-  }
-}, 100)
-let page_party_grid_button_grid = function() {
-  let name
-
-  name = document.createElement('div')
-  name.className = 'page-party-grid-button-grid'
-  name.style.cssText =
-  `
-  background-color: red;
-  grid-area: page-party-grid-button-grid;
-
-  `
-
-  document.querySelector('.page-party-grid').append(name)
-
-  document.querySelector('.page-party-grid-button-grid').onclick = function() {
-    party_message_data('create')
-  }
-}
-let page_party_grid_button_text = function() {
-  let name
-
-  name = document.createElement('div')
-  name.className = 'page-party-grid-button-text'
-  name.textContent = 'create'
-  name.style.cssText =
-  `
-  background-color: white;
-  text-align: center;
-
-  `
-
-  document.querySelector('.page-party-grid-button-grid').append(name)
-}
-let page_party_grid_list = setInterval(function() {
-  if (!document.querySelector('.page-party-grid-list-grid')) {
-    page_party_grid_list_grid()
-  }
-}, 100)
-let page_party_grid_list_grid = function() {
-  let name
-
-  name = document.createElement('div')
-  name.className = 'page-party-grid-list-grid'
-  name.style.cssText =
-  `
-  background-color: blue;
-  overflow-y: auto;
-  grid-area: page-party-grid-list-grid;
-  `
-
-  document.querySelector('.page-party-grid').append(name)
-}
-let page_party_grid_list_grid_block = setInterval(function() {
-  document.querySelector('.page-party-grid-list-grid').innerHTML = ''
-
-  for (var i = 0; i < party_client.length; i++) {
-    page_party_grid_list_grid_block_grid(i)
-    page_party_grid_list_grid_block_grid_distance(i)
-    page_party_grid_list_grid_block_grid_distance_text(i, party_client[i].distance)
-    page_party_grid_list_grid_block_grid_people(i)
-    page_party_grid_list_grid_block_grid_people_text(i, party_client[i].people)
-  }
-}, 100)
-let page_party_grid_list_grid_block_grid = function(number) {
-  let name
-
-  name = document.createElement('div')
-  name.className = 'page-party-grid-list-grid-block-grid-' + number
-  name.style.cssText =
-  `
-  width: 100%;
-  height: 10vh;
-  background-color: orange;
-  display: grid;
-  grid-template-columns: 50% 50%;
-  grid-template-rows: 100%;
-  grid-template-areas:
-  "page-party-grid-list-grid-block-grid-distance page-party-grid-list-grid-block-grid-people";
-  `
-
-  document.querySelector('.page-party-grid-list-grid').append(name)
-
-  document.querySelector('.page-party-grid-list-grid-block-grid-' + number).onclick = function() {
-    party_message_data('connect')
-  }
-}
-let page_party_grid_list_grid_block_grid_distance = function(number) {
-  let name
-
-  name = document.createElement('div')
-  name.className = 'page-party-grid-list-grid-block-grid-distance-' + number
-  name.style.cssText =
-  `
-  background-color: red;
-  border-radius: 10px 0px 0px 10px;
-  margin-top: 10px;
-  margin-left:10px;
-  border-top: 1px solid black;
-  border-left: 1px solid black;
-  border-bottom: 1px solid black;
-  grid-area: page-party-grid-list-grid-block-grid-distance;
-  `
-
-  document.querySelector('.page-party-grid-list-grid-block-grid-' + number).append(name)
-}
-let page_party_grid_list_grid_block_grid_distance_text = function(number, data) {
-  var name
-
-  name = document.createElement('div')
-  name.textContent = 'distance: ' + data
-  name.className = 'page-party-grid-list-grid-block-grid-distance-text-' + number
-  name.style.cssText =
-  `
-  text-align: center;
-  color: white;
-  `
-
-  document.querySelector('.page-party-grid-list-grid-block-grid-distance-' + number).append(name)
-}
-let page_party_grid_list_grid_block_grid_people = function(number) {
-  var name
-
-  name = document.createElement('div')
-  name.className = 'page-party-grid-list-grid-block-grid-people-' + number
-  name.style.cssText =
-  `
-  background-color: blue;
-  border-radius: 0px 10px 10px 0px;
-  margin-top: 10px;
-  margin-right:10px;
-  border-top: 1px solid black;
-  border-right: 1px solid black;
-  border-bottom: 1px solid black;
-  grid-area: page-party-grid-list-grid-block-grid-people;
-  `
-
-  document.querySelector('.page-party-grid-list-grid-block-grid-' + number).append(name)
-}
-let page_party_grid_list_grid_block_grid_people_text = function(number, data) {
-  var name
-
-  name = document.createElement('div')
-  name.textContent = 'people: ' + data
-  name.className = 'page-party-grid-list-grid-block-grid-people-text-' + number
-  name.style.cssText =
-  `
-  text-align: center;
-  color: white;
-  `
-
-  document.querySelector('.page-party-grid-list-grid-block-grid-people-' + number).append(name)
-}
-
-
-
-if (!party_client) {
-  party_client = []
-}
-for (var i = 0; i < 20; i++) {
-  party_client[i] = {
-    distance: i,
-    people: i
-  }
+let party = {
+  list: undefined,
+  data: {
+    name: undefined,
+    id: undefined,
+    geolocation: {
+      x: undefined,
+      y: undefined,
+    },
+    interval: setInterval(function() {
+      party.data.id = peerJs.peer.id
+      party.data.geolocation.x = geolocation.x
+      party.data.geolocation.y = geolocation.y
+    },
+      1000),
+  },
+  action: function(data) {
+    if (data == 'list') {
+      party.data.name = 'list'
+    }
+    if (data == 'create') {
+      party.data.name = 'create'
+    }
+    if (data == 'connect') {
+      party.data.name = 'connect'
+    }
+  },
 }
