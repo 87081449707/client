@@ -1,8 +1,8 @@
-///////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 // webRTC
 // icon
 let google = {
-  page: function(geolocation) {
+  map: function(geolocation) {
     window.open('https://www.google.com/maps/@' + geolocation.x + ',' + geolocation.y + ',12z')
   }
 }
@@ -95,27 +95,8 @@ let peerJs = {
 }
 let html = {
   party: {
-    interval: setInterval(function() {
-      if (!document.querySelector('.html-party-grid')) {
-        html.party.grid()
-      }
-      if (!document.querySelector('.html-party-button-grid')) {
-        html.party.button.grid()
-      }
-      if (!document.querySelector('.html-party-list-grid')) {
-        html.party.list.grid()
-      }
-
-      document.querySelector('.html-party-list-grid').innerHTML = ""
-
-      for (var i = 0; i < 3; i++) {
-        html.party.list.block.grid(i)
-        html.party.list.block.distance.grid(i)
-        html.party.list.block.people.grid(i)
-      }
-    },
-      1000),
-    grid: function() {
+    div: {
+      grid: function() {
       let div
 
       div = document.createElement('div')
@@ -135,8 +116,29 @@ let html = {
 
       document.querySelector('body').append(div)
     },
+      interval: setInterval(function() {
+      if (!document.querySelector('.html-party-grid')) {
+        html.party.grid()
+      }
+      if (!document.querySelector('.html-party-button-grid')) {
+        html.party.button.grid()
+      }
+      if (!document.querySelector('.html-party-list-grid')) {
+        html.party.list.grid()
+      }
+
+      document.querySelector('.html-party-list-grid').innerHTML = ""
+
+      for (var i = 0; i < 3; i++) {
+        html.party.list.block.grid(i)
+        html.party.list.block.distance.grid(i)
+        html.party.list.block.people.grid(i)
+      }
+    }, 1000),
+    },
     button: {
-      grid: function() {
+      div: {
+        grid: function() {
         let div
 
         div = document.createElement('div')
@@ -150,8 +152,13 @@ let html = {
 
         document.querySelector('.html-party-grid').append(div)
       },
+        interval: setInterval(function() {
+        
+      }, 100),
+      },
     },
     list: {
+      div: {
       grid: function() {
         let div
 
@@ -167,6 +174,8 @@ let html = {
 
         document.querySelector('.html-party-grid').append(div)
       },
+      
+      }
       block: {
         grid: function(data) {
           let div
@@ -219,7 +228,7 @@ let html = {
         },
       },
     },
-  }
+  },
 }
 let party = {
   list: undefined,
