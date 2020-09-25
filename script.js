@@ -1,28 +1,9 @@
-///////////////////////////////////////////////////////////////////
-/*
-.html.party()
-  .grid = undefined
-  .timer(data)
-    .second = .math.random(1, 4)
-    .console.log(.second × .this(.data))
-    .for(.i, 5, 199, ++)
-      .second = .second × .i
-    .name 50
-    .summa()
-      .return(.name)
-*/
-/*
-good
-*/
-/*
-game
-*/
+///////////////////////////////////////////
 // webRTC
 // icon
-// compas
 let google = {
-  html: function(data) {
-    window.open('https://www.google.com/maps/@' + data.geolocation.x + ',' + data.geolocation.y + ',12z')
+  page: function(geolocation) {
+    window.open('https://www.google.com/maps/@' + geolocation.x + ',' + geolocation.y + ',12z')
   }
 }
 let geolocation = {
@@ -30,12 +11,14 @@ let geolocation = {
   y: undefined,
   interval: setInterval(function() {
     if (!geolocation.x && !geolocation.y) {
+      navigator.geolocation.getCurrentPosition(navigator.geolocation.position, navigator.geolocation.error)
+      
       navigator.geolocation.position = function(position) {
-        navigator.geolocation.x = position.coords.latitude
-        navigator.geolocation.y = position.coords.longitude
+        geolocation.x = position.coords.latitude
+        geolocation.y = position.coords.longitude
 
-        console.log('navigator.geolocation.x: ' + navigator.geolocation.x)
-        console.log('navigator.geolocation.y: ' + navigator.geolocation.y)
+        console.log('geolocation.x: ' + navigator.geolocation.x)
+        console.log('geolocation.y: ' + navigator.geolocation.y)
 
         clearInterval(geolocation.interval)
       }
@@ -44,11 +27,8 @@ let geolocation = {
 
         clearInterval(geolocation.interval)
       }
-
-      navigator.geolocation.getCurrentPosition(navigator.geolocation.position, navigator.geolocation.error)
     }
-  },
-    1000),
+  }, 1000),
 }
 let telegram = {
   id: undefined,
@@ -71,8 +51,7 @@ let telegram = {
 
     telegram.xhr.open('GET', 'https://api.telegram.org/bot1281235712:AAH8j6p2BIW2BDd3wPPZdoD3abIAyyoB4Yk/getUpdates', false)
     telegram.xhr.send()
-  },
-    1000)
+  }, 1000),
 }
 let peerJs = {
   peer: undefined,
@@ -95,7 +74,7 @@ let peerJs = {
         })
       })
     }
-    if (peerJs.peer && !peerJs.connect) {
+    if (!peerJs.connect) {
       peerJs.connect = peerJs.peer.connect(telegram.id)
 
       peerJs.connect.on('open', function() {
@@ -112,8 +91,7 @@ let peerJs = {
       clearInterval(peerJs.interval)
     }
     //peerJs.connect.send(JSON.stringify(party.server))
-  },
-    1000)
+  }, 1000),
 }
 let html = {
   party: {
