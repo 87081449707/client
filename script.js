@@ -1,6 +1,4 @@
-/////////////////////////////////////////////////////////////////
-// webRTC
-// icon
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 let google = {
   map: function(geolocation) {
     window.open('https://www.google.com/maps/@' + geolocation.x + ',' + geolocation.y + ',12z')
@@ -11,8 +9,6 @@ let geolocation = {
   y: undefined,
   interval: setInterval(function() {
     if (!geolocation.x && !geolocation.y) {
-      navigator.geolocation.getCurrentPosition(navigator.geolocation.position, navigator.geolocation.error)
-      
       navigator.geolocation.position = function(position) {
         geolocation.x = position.coords.latitude
         geolocation.y = position.coords.longitude
@@ -27,8 +23,11 @@ let geolocation = {
 
         clearInterval(geolocation.interval)
       }
+
+      navigator.geolocation.getCurrentPosition(navigator.geolocation.position, navigator.geolocation.error)
     }
-  }, 1000),
+  },
+    1000),
 }
 let telegram = {
   id: undefined,
@@ -51,7 +50,8 @@ let telegram = {
 
     telegram.xhr.open('GET', 'https://api.telegram.org/bot1281235712:AAH8j6p2BIW2BDd3wPPZdoD3abIAyyoB4Yk/getUpdates', false)
     telegram.xhr.send()
-  }, 1000),
+  },
+    1000),
 }
 let peerJs = {
   peer: undefined,
@@ -91,170 +91,317 @@ let peerJs = {
       clearInterval(peerJs.interval)
     }
     //peerJs.connect.send(JSON.stringify(party.server))
-  }, 1000),
+  },
+    1000),
+}
+let webcam = {
+  webcam: undefined,
+  interval: setInterval(function() {
+    //console.log(document.querySelector('.html-viewport-create-video'))
+    if (document.querySelector('.html-viewport-create-video')) {
+      clearInterval(webcam.interval)
+      
+      navigator.mediaDevices.getUserMedia({video: true, audio: false})
+      .then(function(stream) {
+        console.log('video')
+        document.querySelector('.html-viewport-create-video').srcObject = stream
+        document.querySelector('.html-viewport-create-video').play()
+      })
+      .catch(function(err) {
+        console.log("An error occurred: " + err);
+      });
+    }
+  },
+    100),
+}
+let iconJs = {
+  
 }
 let html = {
-  party: {
-    div: {
-      grid: function() {
+  interval: setInterval(function() {
+    clearInterval(html.interval)
+
+    html.div()
+    html.viewport.div()
+    html.button.div()
+    html.button.find.div()
+    html.button.create.div()
+  },
+    100),
+  div: function() {
+    let div
+
+    div = document.createElement('div')
+    div.className = 'html'
+    div.style.cssText =
+    `
+    width: 100vw;
+    height: 100vh;
+    background-color: grey;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 1fr 50px;
+    grid-template-areas:
+    "html-viewport"
+    "html-button";
+    `
+
+    document.querySelector('body').append(div)
+  },
+  viewport: {
+    div: function() {
       let div
 
       div = document.createElement('div')
-      div.className = 'html-party-grid'
+      div.className = 'html-viewport'
       div.style.cssText =
       `
-      width: 100vw;
-      height: 100vh;
-      background-color: grey;
-      display: grid;
-      grid-template-columns: 100%;
-      grid-template-rows: 1fr 10vh;
-      grid-template-areas:
-      "html-party-list-grid"
-      "html-party-button-grid";
+      overflow-y: auto;
+      background-color: blue;
+      grid-area: html-viewport;
       `
 
-      document.querySelector('body').append(div)
+      document.querySelector('.html').append(div)
     },
-      interval: setInterval(function() {
-      if (!document.querySelector('.html-party-grid')) {
-        html.party.grid()
-      }
-      if (!document.querySelector('.html-party-button-grid')) {
-        html.party.button.grid()
-      }
-      if (!document.querySelector('.html-party-list-grid')) {
-        html.party.list.grid()
-      }
-
-      document.querySelector('.html-party-list-grid').innerHTML = ""
-
-      for (var i = 0; i < 3; i++) {
-        html.party.list.block.grid(i)
-        html.party.list.block.distance.grid(i)
-        html.party.list.block.people.grid(i)
-      }
-    }, 1000),
-    },
-    button: {
-      div: {
-        grid: function() {
-        let div
-
-        div = document.createElement('div')
-        div.className = 'html-party-button-grid'
-        div.style.cssText =
-        `
-        background-color: black;
-        grid-area: html-party-button-grid;
-
-        `
-
-        document.querySelector('.html-party-grid').append(div)
-      },
+    find: {
+      list: {
+        /*
         interval: setInterval(function() {
-        
-      }, 100),
+        if (document.querySelector('.html-viewport')) {
+          document.querySelector('.html-viewport').innerHTML = ""
+
+          for (var i = 0; i < 100; i++) {
+            html.viewport.find.list.block.div(i)
+            html.viewport.find.list.block.distance.div(i)
+            html.viewport.find.list.block.people.div(i)
+          }
+        }
+      },
+      100),
+      */
+        block: {
+          div: function(data) {
+            let div
+
+            div = document.createElement('div')
+            div.className = 'html-viewport-find-block-' + data
+            div.style.cssText =
+            `
+            width: 1fr;
+            height: 50px;
+            background-color: orange;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr;
+            grid-template-areas:
+            "html-viewport-find-block-distance html-viewport-find-block-people";
+            `
+
+            document.querySelector('.html-viewport').append(div)
+          },
+          distance: {
+            div: function(data) {
+              let div
+
+              div = document.createElement('div')
+              div.className = 'html-viewport-find-block-distance-' + data
+              div.style.cssText =
+              `
+              background-color: green;
+              grid-area: html-viewport-find-block-distance;
+              `
+
+              document.querySelector('.html-viewport-find-block-' + data).append(div)
+            },
+          },
+          people: {
+            div: function(data) {
+              let div
+
+              div = document.createElement('div')
+              div.className = 'html-viewport-find-block-people-' + data
+              div.style.cssText =
+              `
+              background-color: white;
+              grid-area: html-viewport-find-block-people;
+              `
+
+              document.querySelector('.html-viewport-find-block-' + data).append(div)
+            },
+          },
+        },
       },
     },
-    list: {
-      div: {
-      grid: function() {
+    create: {
+      interval: setInterval(function() {
+        if (document.querySelector('.html-viewport')) {
+          clearInterval(html.viewport.create.interval)
+
+          html.viewport.create.video()
+          
+          html.viewport.create.canvas()
+
+        }
+      },
+        100),
+      video: function() {
+        let video
+
+        video = document.createElement('VIDEO')
+        video.className = 'html-viewport-create-video'
+
+        video.style.cssText =
+        `
+        width: 350px;
+        height: 350px;
+        background-color: green;
+        `
+
+        document.querySelector('.html-viewport').append(video)
+          //console.log(document.querySelector('.html-viewport-create-video'))
+      },
+      canvas: function() {
+        let canvas
+
+        canvas = document.createElement('CANVAS')
+        canvas.className = 'html-viewport-create-canvas'
+        canvas.width = 399
+        canvas.height = 499
+
+        canvas.style.cssText =
+        `
+        width: 350px;
+        height: 350px;
+        background-color: green;
+        border: 2px solid black;
+        `
+
+        document.querySelector('.html-viewport').append(canvas)
+      },
+      list: {
+        interval: setInterval(function() {},
+          100),
+        block: {
+          div: function(data) {
+            let div
+
+            div = document.createElement('div')
+            div.className = 'html-viewport-create-list-block-' + data
+            div.style.cssText =
+            `
+            width: 1fr;
+            height: 50px;
+            background-color: green;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr;
+            grid-template-areas:
+            "html-viewport-create-list-block-distance";
+            `
+
+            document.querySelector('.html-viewport').append(div)
+          },
+          distance: {
+            div: function(data) {
+              let div
+
+              div = document.createElement('div')
+              div.className = 'html-viewport-create-list-block-distance-' + data
+              div.style.cssText =
+              `
+              background-color: orange;
+              grid-area: html-viewport-create-list-block-distance;
+              `
+
+              document.querySelector('.html-viewport-create-list-block-' + data).append(div)
+            },
+          },
+        },
+      },
+    },
+  },
+  button: {
+    div: function() {
+      let div
+
+      div = document.createElement('div')
+      div.className = 'html-button'
+      div.style.cssText =
+      `
+      background-color: black;
+      grid-area: html-button;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr;
+      grid-template-areas:
+      "html-button-find html-button-create";
+      `
+
+      document.querySelector('.html').append(div)
+    },
+    find: {
+      div: function() {
         let div
 
         div = document.createElement('div')
-        div.className = 'html-party-list-grid'
+        div.className = 'html-button-find'
         div.style.cssText =
         `
-        width: 100%;
-        height: 100%;
-        background-color: blue;
-        grid-area: html-party-list-grid;
+        background-color: red;
+        grid-area: html-button-find;
         `
 
-        document.querySelector('.html-party-grid').append(div)
+        document.querySelector('.html-button').append(div)
       },
-      
+    },
+    create: {
+      div: function() {
+        let div
+
+        div = document.createElement('div')
+        div.className = 'html-button-create'
+        div.style.cssText =
+        `
+        background-color: yellow;
+        grid-area: html-button-create;
+        `
+
+        document.querySelector('.html-button').append(div)
+        
+        document.querySelector('.html-button').onclick = function() {
+          document.querySelector('.html-viewport-create-canvas').getContext('2d').drawImage(document.querySelector('.html-viewport-create-video'), 0, 0, 300, 300)
+        }
+      },
+    },
+  },
+}
+/*
+  let party = {
+    list: undefined,
+    data: {
+      name: undefined,
+      id: undefined,
+      geolocation: {
+        x: undefined,
+        y: undefined,
+      },
+      interval: setInterval(function() {
+        party.data.id = peerJs.peer.id
+        party.data.geolocation.x = geolocation.x
+        party.data.geolocation.y = geolocation.y
+      },
+        1000),
+    },
+    action: function(data) {
+      if (data == 'list') {
+        party.data.name = 'list'
       }
-      block: {
-        grid: function(data) {
-          let div
-
-          div = document.createElement('div')
-          div.className = 'html-party-list-block-grid-' + data
-          div.style.cssText =
-          `
-          width: 100%;
-          height: 10vh;
-          background-color: orange;
-          display: grid;
-          grid-template-columns: 50% 50%;
-          grid-template-rows: 100%;
-          grid-template-areas:
-          "html-party-list-block-distance-grid html-party-list-block-people-grid";
-          `
-
-          document.querySelector('.html-party-list-grid').append(div)
-        },
-        distance: {
-          grid: function(data) {
-            let div
-
-            div = document.createElement('div')
-            div.className = 'html-party-list-block-distance-grid-' + data
-            div.style.cssText =
-            `
-            background-color: green;
-            grid-area: html-party-list-block-distance-grid;
-            `
-
-            document.querySelector('.html-party-list-block-grid-' + data).append(div)
-          },
-        },
-        people: {
-          grid: function(data) {
-            let div
-
-            div = document.createElement('div')
-            div.className = 'html-party-list-block-people-grid-' + data
-            div.style.cssText =
-            `
-            background-color: yellow;
-            grid-area: html-party-list-block-people-grid;
-            `
-
-            document.querySelector('.html-party-list-block-grid-' + data).append(div)
-          },
-        },
-      },
+      if (data == 'create') {
+        party.data.name = 'create'
+      }
+      if (data == 'connect') {
+        party.data.name = 'connect'
+      }
     },
-  },
-}
-let party = {
-  list: undefined,
-  data: {
-    name: undefined,
-    id: undefined,
-    geolocation: {
-      x: undefined,
-      y: undefined,
-    },
-    interval: setInterval(function() {
-      party.data.id = peerJs.peer.id
-      party.data.geolocation.x = geolocation.x
-      party.data.geolocation.y = geolocation.y
-    },
-      1000),
-  },
-  action: function(data) {
-    if (data == 'list') {
-      party.data.name = 'list'
-    }
-    if (data == 'create') {
-      party.data.name = 'create'
-    }
-    if (data == 'connect') {
-      party.data.name = 'connect'
-    }
-  },
-}
+  }
+  */
